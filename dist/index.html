@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="SkillSwap" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    
+    <!-- App Store Meta Tags -->
+    <meta name="application-name" content="SkillSwap" />
+    <meta name="description" content="Connect with people who can teach you what you want to learn, and share your expertise in return. Build meaningful relationships through skill exchange." />
+    <meta name="keywords" content="skill exchange, learning, education, community, skills, teaching, learning platform" />
+    <meta name="author" content="SkillSwap Team" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SkillSwap - Trade Skills, Not Money" />
+    <meta property="og:description" content="Connect with people who can teach you what you want to learn, and share your expertise in return." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://skillswap.app" />
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SkillSwap - Trade Skills, Not Money" />
+    <meta name="twitter:description" content="Connect with people who can teach you what you want to learn, and share your expertise in return." />
+    <meta name="twitter:image" content="/og-image.png" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/apple-touch-icon-167x167.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <title>SkillSwap - Trade Skills, Not Money</title>
+    <script type="module" crossorigin src="/assets/index-CHJx9uwO.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BvyugpNt.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- PWA Install Prompt -->
+    <script>
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+      
+      // Add to home screen prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install button or banner
+        console.log('Install prompt ready');
+      });
+    </script>
+  </body>
+</html> 
