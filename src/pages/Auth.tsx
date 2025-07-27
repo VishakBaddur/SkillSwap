@@ -14,6 +14,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -49,6 +50,40 @@ export default function Auth() {
         });
         setIsLogin(true);
       }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Password Reset Sent",
+        description: "Check your email for a password reset link.",
+      });
+      setShowForgotPassword(false);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -123,7 +158,43 @@ export default function Auth() {
                     )}
                   </Button>
                 </div>
+                {isLogin && (
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotPassword(!showForgotPassword)}
+                      className="text-xs md:text-sm text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                )}
               </div>
+
+              {isLogin && showForgotPassword && (
+                <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                  <p className="text-sm text-blue-800 mb-3">
+                    Enter your email above and click the button below to reset your password.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleForgotPassword}
+                    disabled={loading || !email}
+                    className="w-full touch-target"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                        Sending Reset Link...
+                      </>
+                    ) : (
+                      'Send Password Reset Link'
+                    )}
+                  </Button>
+                </div>
+              )}
               <Button 
                 type="submit" 
                 className="w-full touch-target" 
