@@ -68,8 +68,6 @@ export default function Home() {
           bio,
           email,
           profile_picture,
-          phone,
-          location,
           created_at,
           user_skills (
             id,
@@ -85,7 +83,10 @@ export default function Home() {
         `)
         .neq('id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       // Transform the data
       const transformedUsers = usersData?.map(user => ({
@@ -94,8 +95,8 @@ export default function Home() {
         bio: user.bio,
         email: user.email,
         profile_picture: user.profile_picture,
-        phone: user.phone,
-        location: user.location,
+        phone: (user as any).phone || null,
+        location: (user as any).location || null,
         created_at: user.created_at,
         skills: user.user_skills?.map((us: any) => ({
           id: us.skills?.id,
@@ -109,6 +110,7 @@ export default function Home() {
 
       setUsers(transformedUsers);
     } catch (error: any) {
+      console.error('Error fetching users:', error);
       toast({
         title: "Error",
         description: error.message,
