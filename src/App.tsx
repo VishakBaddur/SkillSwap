@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { BookOpen } from 'lucide-react';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
+import ResetPassword from '@/pages/ResetPassword';
 import Home from '@/pages/Home';
 import Profile from '@/pages/Profile';
 import ProfileSetup from '@/pages/ProfileSetup';
@@ -91,6 +92,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={(!session || isRecovery) ? <Auth /> : <Navigate to="/home" />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home" element={session ? <Home /> : <Navigate to="/auth" />} />
         <Route path="/matches" element={session ? <Matches /> : <Navigate to="/auth" />} />
         <Route path="/profile" element={session ? <Profile /> : <Navigate to="/auth" />} />
