@@ -14,7 +14,7 @@ import {
   CheckCircle,
   X
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
 interface UserSafetyProps {
