@@ -15,6 +15,7 @@ import { Matches } from '@/components/ui/matches';
 function App() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
     // Test Supabase connection
@@ -51,6 +52,14 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Detect Supabase password recovery links so we don't auto-redirect away from /auth
+  useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    const queryParams = new URLSearchParams(window.location.search);
+    const recovery = hashParams.get('type') === 'recovery' || queryParams.get('type') === 'recovery';
+    setIsRecovery(recovery);
+  }, []);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center overflow-hidden">
@@ -75,7 +84,7 @@ function App() {
     <ErrorBoundary>
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/auth" element={!session ? <Auth /> : <Navigate to="/home" />} />
+        <Route path="/auth" element={(!session || isRecovery) ? <Auth /> : <Navigate to="/home" />} />
         <Route path="/home" element={session ? <Home /> : <Navigate to="/auth" />} />
         <Route path="/matches" element={session ? <Matches /> : <Navigate to="/auth" />} />
         <Route path="/profile" element={session ? <Profile /> : <Navigate to="/auth" />} />
