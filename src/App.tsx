@@ -65,6 +65,18 @@ function App() {
     const queryParams = new URLSearchParams(window.location.search);
     const recovery = hashParams.get('type') === 'recovery' || queryParams.get('type') === 'recovery';
     setIsRecovery(recovery);
+
+    // If recovery token lands on wrong route (e.g., /auth), auto-redirect to /reset-password preserving tokens
+    const hasAccessToken = window.location.hash.includes('access_token');
+    const onAuthPath = window.location.pathname === '/auth';
+    if ((recovery || hasAccessToken) && onAuthPath) {
+      const hash = window.location.hash || '';
+      const search = window.location.search || '';
+      const target = `/reset-password${search}${hash}`;
+      if (window.location.pathname + window.location.search + window.location.hash !== target) {
+        window.location.replace(target);
+      }
+    }
   }, []);
 
   if (loading) {
