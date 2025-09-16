@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +19,9 @@ import {
   Users,
   Star,
   ExternalLink,
-  MessageCircle
+  MessageCircle,
+  User,
+  Settings
 } from 'lucide-react';
 
 interface User {
@@ -233,6 +236,39 @@ export default function Home() {
         initial="hidden"
         animate={headerInView ? "visible" : "hidden"}
       >
+        {/* Top Navigation */}
+        <motion.div className="flex justify-between items-center mb-6" variants={itemVariants}>
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              SkillSwap
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Link to="/profile">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
+                <User className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Profile</span>
+              </Button>
+            </Link>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => supabase.auth.signOut()}
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+            >
+              <span className="hidden sm:inline">Sign Out</span>
+              <span className="sm:hidden">Out</span>
+            </Button>
+          </div>
+        </motion.div>
+
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <motion.div 
             className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
