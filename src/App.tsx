@@ -44,9 +44,15 @@ function App() {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setLoading(false);
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsRecovery(true);
+        if (window.location.pathname !== '/auth') {
+          window.location.replace('/auth');
+        }
+      }
     });
 
     return () => subscription.unsubscribe();
