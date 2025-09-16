@@ -54,8 +54,11 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
 
   const fetchMessages = async () => {
     try {
+      setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
+
+      console.log('🔍 Debug - Fetching messages for user:', user.id, 'with target user:', userId);
 
       const { data, error } = await supabase
         .from('messages')
@@ -66,14 +69,18 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
         .or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`)
         .order('created_at', { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error('🔍 Debug - Supabase error:', error);
+        throw error;
+      }
 
+      console.log('🔍 Debug - Messages fetched successfully:', data);
       setMessages(data || []);
     } catch (error: any) {
       console.error('Error fetching messages:', error);
       toast({
         title: "Error",
-        description: "Failed to load messages",
+        description: `Failed to load messages: ${error.message}`,
         variant: "destructive",
       });
     } finally {
