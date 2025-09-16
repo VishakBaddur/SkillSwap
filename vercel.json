@@ -1,6 +1,10 @@
 {
   "version": 2,
   "routes": [
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/favicon\\.(ico|svg)", "dest": "/favicon.$1" },
+    { "src": "/manifest\\.json", "dest": "/manifest.json" },
+    { "src": "/sw\\.js", "dest": "/sw.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
