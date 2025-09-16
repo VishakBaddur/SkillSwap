@@ -18,21 +18,45 @@ export default function ResetPassword() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if we have a valid recovery session
-    const checkRecoverySession = async () => {
+    const ensureSession = async () => {
+      // 1) Try to set session from hash tokens (access_token/refresh_token)
+      const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      if (accessToken && refreshToken) {
+        try {
+          const { error } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+          if (error) console.error('setSession error', error);
+        } catch (e) {
+          console.error('setSession exception', e);
+        }
+      }
+
+      // 2) If token_hash present (query or hash), verify it
+      const queryParams = new URLSearchParams(window.location.search);
+      const tokenHash = queryParams.get('token_hash') || queryParams.get('token') || hashParams.get('token_hash') || hashParams.get('token');
+      if (tokenHash) {
+        try {
+          const { error } = await supabase.auth.verifyOtp({ type: 'recovery', token_hash: tokenHash });
+          if (error) console.error('verifyOtp error', error);
+        } catch (e) {
+          console.error('verifyOtp exception', e);
+        }
+      }
+
+      // 3) Finally, verify we have a session
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         toast({
-          title: "Invalid Link",
-          description: "This password reset link is invalid or has expired.",
-          variant: "destructive",
+          title: 'Invalid or expired link',
+          description: 'Request a new password reset link and try again.',
+          variant: 'destructive',
         });
         navigate('/auth');
-        return;
       }
     };
 
-    checkRecoverySession();
+    ensureSession();
   }, [navigate, toast]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
