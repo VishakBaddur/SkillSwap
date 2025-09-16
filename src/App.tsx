@@ -61,18 +61,28 @@ function App() {
 
   // Detect Supabase password recovery links so we don't auto-redirect away from /auth
   useEffect(() => {
+    console.log('🔍 Debug - Current URL:', window.location.href);
+    console.log('🔍 Debug - Pathname:', window.location.pathname);
+    console.log('🔍 Debug - Search:', window.location.search);
+    console.log('🔍 Debug - Hash:', window.location.hash);
+    
     const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
     const queryParams = new URLSearchParams(window.location.search);
     const recovery = hashParams.get('type') === 'recovery' || queryParams.get('type') === 'recovery';
+    console.log('🔍 Debug - Is recovery:', recovery);
     setIsRecovery(recovery);
 
     // If recovery token lands on wrong route (e.g., /auth), auto-redirect to /reset-password preserving tokens
     const hasAccessToken = window.location.hash.includes('access_token');
     const onAuthPath = window.location.pathname === '/auth';
+    console.log('🔍 Debug - Has access token:', hasAccessToken);
+    console.log('🔍 Debug - On auth path:', onAuthPath);
+    
     if ((recovery || hasAccessToken) && onAuthPath) {
       const hash = window.location.hash || '';
       const search = window.location.search || '';
       const target = `/reset-password${search}${hash}`;
+      console.log('🔍 Debug - Redirecting to:', target);
       if (window.location.pathname + window.location.search + window.location.hash !== target) {
         window.location.replace(target);
       }
