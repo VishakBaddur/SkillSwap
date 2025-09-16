@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,8 +16,23 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Detect Supabase recovery link (type=recovery) and show reset form
+  useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    const queryParams = new URLSearchParams(window.location.search);
+    const isRecovery = hashParams.get('type') === 'recovery' || queryParams.get('type') === 'recovery';
+
+    if (isRecovery) {
+      setShowResetPassword(true);
+      setIsLogin(true);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,6 +106,46 @@ export default function Auth() {
         description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!newPassword || newPassword.length < 6) {
+      toast({
+        title: 'Weak password',
+        description: 'Password must be at least 6 characters.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: 'Passwords do not match',
+        description: 'Make sure both passwords are the same.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+
+      toast({ title: 'Password updated', description: 'You can now sign in with your new password.' });
+      setShowResetPassword(false);
+
+      // Clean URL of recovery params
+      const url = new URL(window.location.href);
+      url.hash = '';
+      url.searchParams.delete('type');
+      window.history.replaceState({}, '', url.toString());
+
+      navigate('/auth');
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -376,6 +431,54 @@ export default function Auth() {
                     onClick={() => setShowForgotPassword(false)}
                     className="border-white/20 text-white hover:bg-white/10"
                   >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Reset Password Modal (for recovery links) */}
+      <AnimatePresence>
+        {showResetPassword && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <h3 className="text-xl font-semibold text-white mb-4">Set a New Password</n>
+              <p className="text-gray-300 mb-6">Enter and confirm your new password.</p>
+              <div className="space-y-4">
+                <Input
+                  type="password"
+                  placeholder="New password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+                <Input
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+                <div className="flex gap-3">
+                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Update Password
+                  </Button>
+                  <Button variant="outline" onClick={() => setShowResetPassword(false)} className="border-white/20 text-white hover:bg-white/10">
                     Cancel
                   </Button>
                 </div>
