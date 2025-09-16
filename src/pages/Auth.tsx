@@ -104,15 +104,16 @@ export default function Auth() {
 
     setLoading(true);
     try {
+      // Use the main site URL as redirect, then handle the token in our app
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/auth`,
       });
 
       if (error) throw error;
 
       toast({
         title: "Password Reset Sent",
-        description: "Check your email for a password reset link.",
+        description: "Check your email for a password reset link. Click it and you'll be redirected to set a new password.",
       });
       setShowForgotPassword(false);
     } catch (error: any) {
