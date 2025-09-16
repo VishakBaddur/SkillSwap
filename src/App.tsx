@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Toaster } from '@/components/ui/toaster';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { BookOpen } from 'lucide-react';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import Home from '@/pages/Home';
 import Profile from '@/pages/Profile';
 import ProfileSetup from '@/pages/ProfileSetup';
 import NotFound from '@/pages/NotFound';
+import { Matches } from '@/components/ui/matches';
 
 function App() {
   const [session, setSession] = useState<any>(null);
@@ -50,27 +53,37 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="h-8 w-8 bg-blue-500 rounded-full animate-pulse mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+        
+        <div className="text-center relative z-10">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl animate-pulse">
+            <BookOpen className="w-8 h-8 text-white" />
+          </div>
+          <div className="h-4 w-32 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse mx-auto mb-4"></div>
+          <p className="text-gray-300 text-lg">Loading SkillSwap...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={!session ? <Auth /> : <Navigate to="/home" />} />
         <Route path="/home" element={session ? <Home /> : <Navigate to="/auth" />} />
+        <Route path="/matches" element={session ? <Matches /> : <Navigate to="/auth" />} />
         <Route path="/profile" element={session ? <Profile /> : <Navigate to="/auth" />} />
         <Route path="/profile-setup" element={session ? <ProfileSetup /> : <Navigate to="/auth" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
-    </>
+    </ErrorBoundary>
   );
 }
 

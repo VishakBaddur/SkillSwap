@@ -5,7 +5,8 @@ import {
   Home, 
   Search, 
   User, 
-  MessageCircle 
+  MessageCircle,
+  Sparkles
 } from "lucide-react";
 
 interface BottomNavItem {
@@ -21,14 +22,14 @@ const navItems: BottomNavItem[] = [
     icon: Home,
   },
   {
+    href: "/matches",
+    label: "Matches",
+    icon: Sparkles,
+  },
+  {
     href: "/discover",
     label: "Discover",
     icon: Search,
-  },
-  {
-    href: "/messages",
-    label: "Messages",
-    icon: MessageCircle,
   },
   {
     href: "/profile",

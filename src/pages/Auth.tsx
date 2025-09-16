@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
-import { BookOpen, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { BookOpen, Eye, EyeOff, Loader2, Sparkles, Zap, Shield, Users } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -95,182 +96,294 @@ export default function Auth() {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <Card className="bg-white/80 backdrop-blur-md shadow-xl">
-          <CardHeader className="text-center pb-6">
-            <Link to="/" className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <BookOpen className="w-6 h-6 md:w-7 md:h-7 text-white" />
-              </div>
-              <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                SkillSwap
-              </span>
-            </Link>
-            <CardTitle className="text-xl md:text-2xl font-bold">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
-            </CardTitle>
-            <CardDescription className="text-sm md:text-base">
-              {isLogin 
-                ? 'Sign in to your account to continue' 
-                : 'Join SkillSwap to start trading skills'
-              }
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm md:text-base">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                  className="text-sm md:text-base"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm md:text-base">Password</Label>
-                <div className="relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+
+      <motion.div 
+        className="w-full max-w-md relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Logo and Title */}
+        <motion.div 
+          className="text-center mb-8"
+          variants={itemVariants}
+        >
+          <motion.div 
+            className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <BookOpen className="w-8 h-8 text-white" />
+          </motion.div>
+          <motion.h1 
+            className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
+            variants={itemVariants}
+          >
+            Welcome to SkillSwap
+          </motion.h1>
+          <motion.p 
+            className="text-gray-300"
+            variants={itemVariants}
+          >
+            {isLogin ? 'Sign in to your account' : 'Create your account'}
+          </motion.p>
+        </motion.div>
+
+        {/* Auth Card */}
+        <motion.div variants={itemVariants}>
+          <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl text-white">
+                {isLogin ? 'Sign In' : 'Sign Up'}
+              </CardTitle>
+              <CardDescription className="text-gray-300">
+                {isLogin 
+                  ? 'Access your skill exchange dashboard' 
+                  : 'Start your skill trading journey'
+                }
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <motion.div variants={itemVariants}>
+                  <Label htmlFor="email" className="text-white text-sm font-medium">
+                    Email Address
+                  </Label>
                   <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="text-sm md:text-base pr-10"
+                    className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400"
                   />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                {isLogin && (
-                  <div className="text-right">
-                    <button
+                </motion.div>
+
+                <motion.div variants={itemVariants}>
+                  <Label htmlFor="password" className="text-white text-sm font-medium">
+                    Password
+                  </Label>
+                  <div className="relative mt-2">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400"
+                    />
+                    <motion.button
                       type="button"
-                      onClick={() => setShowForgotPassword(!showForgotPassword)}
-                      className="text-xs md:text-sm text-primary hover:underline"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </motion.button>
+                  </div>
+                </motion.div>
+
+                {isLogin && (
+                  <motion.div 
+                    className="flex justify-end"
+                    variants={itemVariants}
+                  >
+                    <motion.button
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
+                      className="text-sm text-purple-300 hover:text-purple-200 transition-colors"
+                      whileHover={{ x: 2 }}
                     >
                       Forgot password?
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
                 )}
-              </div>
 
-              {isLogin && showForgotPassword && (
-                <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <p className="text-sm text-blue-800 mb-3">
-                    Enter your email above and click the button below to reset your password.
-                  </p>
-                  <Button
+                                 <motion.div variants={itemVariants}>
+                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                     <Button
+                       type="submit"
+                       disabled={loading}
+                       className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg"
+                     >
+                       {loading ? (
+                         <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                       ) : (
+                         <Zap className="w-5 h-5 mr-2" />
+                       )}
+                       {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
+                     </Button>
+                   </motion.div>
+                 </motion.div>
+              </form>
+
+              {/* Toggle Auth Mode */}
+              <motion.div 
+                className="text-center pt-4 border-t border-white/10"
+                variants={itemVariants}
+              >
+                <p className="text-gray-300">
+                  {isLogin ? "Don't have an account? " : "Already have an account? "}
+                  <motion.button
                     type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleForgotPassword}
-                    disabled={loading || !email}
-                    className="w-full touch-target"
+                    onClick={() => setIsLogin(!isLogin)}
+                    className="text-purple-300 hover:text-purple-200 font-medium transition-colors"
+                    whileHover={{ scale: 1.05 }}
                   >
-                    {loading ? (
-                      <>
-                        <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                        Sending Reset Link...
-                      </>
-                    ) : (
-                      'Send Password Reset Link'
-                    )}
+                    {isLogin ? 'Sign up' : 'Sign in'}
+                  </motion.button>
+                </p>
+              </motion.div>
+
+              {/* Back to Home */}
+              <motion.div 
+                className="text-center"
+                variants={itemVariants}
+              >
+                <Link to="/">
+                  <motion.button
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                    whileHover={{ x: -2 }}
+                  >
+                    ← Back to Home
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Features Preview */}
+        <motion.div 
+          className="mt-8 text-center"
+          variants={itemVariants}
+        >
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { icon: Users, label: "Community", color: "from-blue-500 to-cyan-500" },
+              { icon: Shield, label: "Secure", color: "from-green-500 to-emerald-500" },
+              { icon: Sparkles, label: "Innovative", color: "from-purple-500 to-pink-500" }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="text-center"
+                whileHover={{ y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
+                  <feature.icon className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-xs text-gray-400">{feature.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Forgot Password Modal */}
+      <AnimatePresence>
+        {showForgotPassword && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <h3 className="text-xl font-semibold text-white mb-4">Reset Password</h3>
+              <p className="text-gray-300 mb-6">
+                Enter your email address and we'll send you a link to reset your password.
+              </p>
+              <div className="space-y-4">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleForgotPassword}
+                    disabled={loading}
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  >
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Send Reset Link
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowForgotPassword(false)}
+                    className="border-white/20 text-white hover:bg-white/10"
+                  >
+                    Cancel
                   </Button>
                 </div>
-              )}
-              <Button 
-                type="submit" 
-                className="w-full touch-target" 
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {isLogin ? 'Signing In...' : 'Creating Account...'}
-                  </>
-                ) : (
-                  isLogin ? 'Sign In' : 'Create Account'
-                )}
-              </Button>
-            </form>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">Or</span>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Button
-                variant="outline"
-                className="w-full touch-target"
-                onClick={() => setIsLogin(!isLogin)}
-              >
-                {isLogin ? 'Create New Account' : 'Already have an account?'}
-              </Button>
-            </div>
-
-            <div className="text-center text-xs md:text-sm text-muted-foreground">
-              {isLogin ? (
-                <p>
-                  Don't have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setIsLogin(false)}
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Sign up
-                  </button>
-                </p>
-              ) : (
-                <p>
-                  Already have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setIsLogin(true)}
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Sign in
-                  </button>
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="mt-6 text-center">
-          <p className="text-xs md:text-sm text-muted-foreground">
-            By continuing, you agree to our{' '}
-            <Link to="/terms" className="text-primary hover:underline">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link to="/privacy" className="text-primary hover:underline">
-              Privacy Policy
-            </Link>
-          </p>
-        </div>
-      </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 } 

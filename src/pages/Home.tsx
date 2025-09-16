@@ -6,8 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserCardSkeleton, StatsSkeleton } from '@/components/ui/loading';
 import { BottomNavigation } from '@/components/ui/bottom-nav';
+import { Chat } from '@/components/ui/chat';
+import { SkillExchangeRequest } from '@/components/ui/skill-exchange';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { 
   BookOpen, 
   Search, 
@@ -18,7 +22,12 @@ import {
   TrendingUp,
   Users,
   Star,
-  ExternalLink
+  ExternalLink,
+  Sparkles,
+  Zap,
+  Heart,
+  MessageCircle,
+  X
 } from 'lucide-react';
 
 interface User {
@@ -47,7 +56,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showChat, setShowChat] = useState(false);
+  const [showSkillExchange, setShowSkillExchange] = useState(false);
   const { toast } = useToast();
+  
+  const [headerRef, headerInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [statsRef, statsInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [usersRef, usersInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
   useEffect(() => {
     fetchUsers();
@@ -98,22 +114,22 @@ export default function Home() {
         phone: (user as any).phone || null,
         location: (user as any).location || null,
         created_at: user.created_at,
-        skills: user.user_skills?.map((us: any) => ({
-          id: us.skills?.id,
-          name: us.skills?.name,
-          category: us.skills?.category,
+        skills: (user as any).user_skills?.map((us: any) => ({
+          id: us.skills.id,
+          name: us.skills.name,
+          category: us.skills.category,
           is_offering: us.is_offering,
           is_learning: us.is_learning,
-          proficiency_level: us.proficiency_level
+          proficiency_level: us.proficiency_level,
         })) || []
       })) || [];
 
       setUsers(transformedUsers);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching users:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: "Failed to load users",
         variant: "destructive",
       });
     } finally {
@@ -123,343 +139,384 @@ export default function Home() {
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         user.bio.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          user.skills.some(skill => skill.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    
     const matchesCategory = selectedCategory === 'all' || 
                            user.skills.some(skill => skill.category === selectedCategory);
+    
     return matchesSearch && matchesCategory;
   });
 
-  const categories = ['all', 'technology', 'languages', 'music', 'art', 'sports', 'cooking', 'business'];
+  const categories = ['all', ...Array.from(new Set(users.flatMap(user => user.skills.map(skill => skill.category))))];
 
-  const handleContact = (user: User, method: 'email' | 'phone') => {
-    if (method === 'email' && user.email) {
-      window.open(`mailto:${user.email}?subject=SkillSwap Connection`, '_blank');
-    } else if (method === 'phone' && user.phone) {
-      window.open(`tel:${user.phone}`, '_blank');
-    } else {
-      toast({
-        title: "Contact Info Not Available",
-        description: `This user hasn't shared their ${method} information.`,
-        variant: "destructive",
-      });
+  const handleMessageUser = (user: User) => {
+    setSelectedUser(user);
+    setShowChat(true);
+    setShowSkillExchange(false);
+  };
+
+  const handleSkillExchange = (user: User) => {
+    setSelectedUser(user);
+    setShowSkillExchange(true);
+    setShowChat(false);
+  };
+
+  const closeModals = () => {
+    setShowChat(false);
+    setShowSkillExchange(false);
+    setSelectedUser(null);
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
     }
   };
 
-  const getTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return date.toLocaleDateString();
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Link to="/" className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    SkillSwap
-                  </span>
-                </Link>
-              </div>
-              <div className="flex items-center space-x-2 md:space-x-4">
-                <Link to="/profile">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Profile</Button>
-                </Link>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => supabase.auth.signOut()}
-                >
-                  <span className="hidden sm:inline">Sign Out</span>
-                  <span className="sm:hidden">Out</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="container mx-auto px-4 py-4 md:py-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-4 md:mb-6">
-              <div className="h-8 w-64 bg-gray-200 rounded-xl animate-pulse mb-2"></div>
-              <div className="h-4 w-96 bg-gray-200 rounded-xl animate-pulse"></div>
-            </div>
-
-            <div className="flex flex-col gap-3 md:flex-row md:gap-4 mb-6 md:mb-8">
-              <div className="relative flex-1">
-                <div className="h-12 w-full bg-gray-200 rounded-xl animate-pulse"></div>
-              </div>
-              <div className="flex gap-2">
-                <div className="h-12 w-32 bg-gray-200 rounded-xl animate-pulse"></div>
-                <div className="h-12 w-12 bg-gray-200 rounded-xl animate-pulse"></div>
-              </div>
-            </div>
-
-            <StatsSkeleton className="mb-6 md:mb-8" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <Card key={i} className="bg-white/80 backdrop-blur-sm">
-                  <CardContent className="p-4 md:p-6">
-                    <UserCardSkeleton />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <BottomNavigation />
-      </div>
-    );
-  }
+  const cardVariants = {
+    hidden: { y: 50, opacity: 0, scale: 0.9 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 pb-20 md:pb-0">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  SkillSwap
-                </span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <Link to="/profile">
-                <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Profile</Button>
-              </Link>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => supabase.auth.signOut()}
-              >
-                <span className="hidden sm:inline">Sign Out</span>
-                <span className="sm:hidden">Out</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Search and Filters */}
-      <div className="container mx-auto px-4 py-4 md:py-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-4 md:mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">Find Your Skill Match</h1>
-            <p className="text-gray-600 text-sm md:text-base">Discover people who can teach you what you want to learn</p>
-          </div>
-
-          <div className="flex flex-col gap-3 md:flex-row md:gap-4 mb-6 md:mb-8">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search skills or people..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base transition-all duration-200"
-              />
-            </div>
-            <div className="flex gap-2">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-3 md:px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base transition-all duration-200"
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </option>
-                ))}
-              </select>
-              <Button variant="outline" size="sm">
-                <Filter className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-6 md:mb-8">
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardContent className="p-3 md:p-4">
-                <div className="flex items-center space-x-2">
-                  <Users className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
-                  <div>
-                    <p className="text-lg md:text-2xl font-bold">{filteredUsers.length}</p>
-                    <p className="text-xs md:text-sm text-gray-600">Available Matches</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardContent className="p-3 md:p-4">
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
-                  <div>
-                    <p className="text-lg md:text-2xl font-bold">
-                      {filteredUsers.reduce((total, user) => 
-                        total + user.skills.filter(s => s.is_offering).length, 0
-                      )}
-                    </p>
-                    <p className="text-xs md:text-sm text-gray-600">Skills Available</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardContent className="p-3 md:p-4">
-                <div className="flex items-center space-x-2">
-                  <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
-                  <div>
-                    <p className="text-lg md:text-2xl font-bold">
-                      {filteredUsers.reduce((total, user) => 
-                        total + user.skills.filter(s => s.is_learning).length, 0
-                      )}
-                    </p>
-                    <p className="text-xs md:text-sm text-gray-600">Skills Wanted</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* User Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {filteredUsers.map((user) => (
-              <Card key={user.id} className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-200 ease-in-out">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="w-10 h-10 md:w-12 md:h-12">
-                      <AvatarImage src={user.profile_picture} />
-                      <AvatarFallback className="text-sm md:text-base">{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0 flex-1">
-                      <CardTitle className="text-base md:text-lg truncate">{user.name}</CardTitle>
-                      <CardDescription className="flex items-center text-xs md:text-sm">
-                        {user.location && (
-                          <>
-                            <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
-                            <span className="truncate">{user.location}</span>
-                          </>
-                        )}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-gray-600 mb-3 line-clamp-2 text-sm md:text-base">{user.bio || "No bio available"}</p>
-                  
-                  <div className="mb-3">
-                    <h4 className="font-semibold mb-1 text-xs md:text-sm text-gray-700">Teaching:</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {user.skills
-                        .filter(skill => skill.is_offering)
-                        .slice(0, 2)
-                        .map(skill => (
-                          <Badge key={skill.id} variant="secondary" className="text-xs">
-                            {skill.name}
-                          </Badge>
-                        ))}
-                      {user.skills.filter(skill => skill.is_offering).length === 0 && (
-                        <span className="text-xs text-gray-500">No teaching skills listed</span>
-                      )}
-                      {user.skills.filter(skill => skill.is_offering).length > 2 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{user.skills.filter(skill => skill.is_offering).length - 2} more
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mb-3">
-                    <h4 className="font-semibold mb-1 text-xs md:text-sm text-gray-700">Learning:</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {user.skills
-                        .filter(skill => skill.is_learning)
-                        .slice(0, 2)
-                        .map(skill => (
-                          <Badge key={skill.id} variant="outline" className="text-xs">
-                            {skill.name}
-                          </Badge>
-                        ))}
-                      {user.skills.filter(skill => skill.is_learning).length === 0 && (
-                        <span className="text-xs text-gray-500">No learning skills listed</span>
-                      )}
-                      {user.skills.filter(skill => skill.is_learning).length > 2 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{user.skills.filter(skill => skill.is_learning).length - 2} more
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1 text-xs text-gray-500">
-                      <span>Joined {getTimeAgo(user.created_at)}</span>
-                    </div>
-                    <div className="flex space-x-1">
-                      {user.email && (
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleContact(user, 'email')}
-                          className="p-1 md:p-2 touch-target"
-                        >
-                          <Mail className="w-3 h-3" />
-                        </Button>
-                      )}
-                      {user.phone && (
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleContact(user, 'phone')}
-                          className="p-1 md:p-2 touch-target"
-                        >
-                          <Phone className="w-3 h-3" />
-                        </Button>
-                      )}
-                      <Button size="sm" className="p-1 md:p-2 touch-target">
-                        <ExternalLink className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {filteredUsers.length === 0 && (
-            <div className="text-center py-8 md:py-12">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 md:w-8 md:h-8 text-gray-400" />
-              </div>
-              <h3 className="text-base md:text-lg font-semibold mb-2">No matches found</h3>
-              <p className="text-gray-600 text-sm md:text-base">Try adjusting your search criteria or check back later</p>
-            </div>
-          )}
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
       </div>
 
+      {/* Header Section */}
+      <motion.header 
+        ref={headerRef}
+        className="container mx-auto px-4 py-8 relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate={headerInView ? "visible" : "hidden"}
+      >
+        <motion.div className="text-center mb-8" variants={itemVariants}>
+          <motion.div 
+            className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <BookOpen className="w-8 h-8 text-white" />
+          </motion.div>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            SkillSwap Dashboard
+          </h1>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Discover amazing people and start trading skills today
+          </p>
+        </motion.div>
+
+        {/* Search and Filter */}
+        <motion.div className="max-w-4xl mx-auto space-y-4" variants={itemVariants}>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search for skills, people, or interests..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400 focus:outline-none backdrop-blur-sm"
+            />
+          </div>
+          
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map((category) => (
+              <motion.button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  selectedCategory === category
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {category === 'all' ? 'All Categories' : category}
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+      </motion.header>
+
+      {/* Stats Section */}
+      <motion.section 
+        ref={statsRef}
+        className="container mx-auto px-4 py-12 relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate={statsInView ? "visible" : "hidden"}
+      >
+        <motion.div 
+          className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10 shadow-2xl"
+          variants={itemVariants}
+        >
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            {[
+              { icon: Users, number: users.length, label: "Available Users", color: "from-blue-500 to-cyan-500" },
+              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "from-purple-500 to-pink-500" },
+              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "from-green-500 to-emerald-500" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
+                  <stat.icon className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  {stat.number}
+                </div>
+                <div className="text-purple-200">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.section>
+
+      {/* Users Grid */}
+      <motion.section 
+        ref={usersRef}
+        className="container mx-auto px-4 py-12 relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate={usersInView ? "visible" : "hidden"}
+      >
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <UserCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <AnimatePresence>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredUsers.map((user, index) => (
+                <motion.div
+                  key={user.id}
+                  variants={cardVariants}
+                  whileHover={{ 
+                    y: -10,
+                    scale: 1.02,
+                    transition: { type: "spring", stiffness: 300, damping: 20 }
+                  }}
+                  layout
+                >
+                  <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl h-full overflow-hidden">
+                    <CardHeader className="text-center pb-4">
+                      <motion.div 
+                        className="w-20 h-20 mx-auto mb-4"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <Avatar className="w-20 h-20 border-4 border-white/20">
+                          <AvatarImage src={user.profile_picture} />
+                          <AvatarFallback className="bg-gradient-to-r from-purple-400 to-pink-400 text-white text-2xl font-bold">
+                            {user.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </motion.div>
+                      <CardTitle className="text-xl text-white mb-2">{user.name}</CardTitle>
+                      <CardDescription className="text-gray-300 text-sm leading-relaxed">
+                        {user.bio || 'No bio available'}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-4">
+                      {/* Skills */}
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold text-white">Skills</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {user.skills.slice(0, 3).map((skill) => (
+                            <Badge
+                              key={skill.id}
+                              variant="secondary"
+                              className={`text-xs ${
+                                skill.is_offering
+                                  ? 'bg-green-500/20 text-green-300 border-green-500/30'
+                                  : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+                              }`}
+                            >
+                              {skill.name}
+                            </Badge>
+                          ))}
+                          {user.skills.length > 3 && (
+                            <Badge variant="secondary" className="text-xs bg-gray-500/20 text-gray-300">
+                              +{user.skills.length - 3} more
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Contact Actions */}
+                      <div className="flex gap-2 pt-2">
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            size="sm"
+                            className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                            onClick={() => handleMessageUser(user)}
+                          >
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Message
+                          </Button>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-white/20 text-white hover:bg-white/10"
+                            onClick={() => handleSkillExchange(user)}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        </motion.div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </AnimatePresence>
+        )}
+
+        {!loading && filteredUsers.length === 0 && (
+          <motion.div 
+            className="text-center py-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-12 h-12 text-purple-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
+            <p className="text-gray-400 mb-6">
+              Try adjusting your search terms or category filters
+            </p>
+            <Button
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedCategory('all');
+              }}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            >
+              Clear Filters
+            </Button>
+          </motion.div>
+        )}
+      </motion.section>
+
+      {/* Bottom Navigation */}
       <BottomNavigation />
+
+      {/* Chat Modal */}
+      <AnimatePresence>
+        {showChat && selectedUser && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-full max-w-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Chat
+                userId={selectedUser.id}
+                userName={selectedUser.name}
+                userProfilePicture={selectedUser.profile_picture}
+                onClose={closeModals}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Skill Exchange Modal */}
+      <AnimatePresence>
+        {showSkillExchange && selectedUser && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-full max-w-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <SkillExchangeRequest
+                userId={selectedUser.id}
+                userName={selectedUser.name}
+                userProfilePicture={selectedUser.profile_picture}
+                userSkills={selectedUser.skills}
+                onClose={closeModals}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 } 
