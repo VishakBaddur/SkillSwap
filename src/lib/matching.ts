@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   id: string;
   name: string;
   bio: string;
@@ -10,7 +10,7 @@ interface User {
   skills: Skill[];
 }
 
-interface Skill {
+export interface Skill {
   id: string;
   name: string;
   category: string;
@@ -19,7 +19,7 @@ interface Skill {
   proficiency_level: string;
 }
 
-interface MatchScore {
+export interface MatchScore {
   user: User;
   score: number;
   reasons: string[];

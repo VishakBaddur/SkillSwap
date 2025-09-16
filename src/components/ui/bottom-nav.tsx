@@ -5,7 +5,6 @@ import {
   Home, 
   Search, 
   User, 
-  MessageCircle,
   Sparkles
 } from "lucide-react";
 

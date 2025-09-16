@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { UserCardSkeleton, StatsSkeleton } from '@/components/ui/loading';
+import { UserCardSkeleton } from '@/components/ui/loading';
 import { BottomNavigation } from '@/components/ui/bottom-nav';
 import { Chat } from '@/components/ui/chat';
 import { SkillExchangeRequest } from '@/components/ui/skill-exchange';
@@ -15,19 +14,11 @@ import { useInView } from 'react-intersection-observer';
 import { 
   BookOpen, 
   Search, 
-  Filter, 
-  Phone, 
-  Mail, 
-  MapPin,
   TrendingUp,
   Users,
   Star,
   ExternalLink,
-  Sparkles,
-  Zap,
-  Heart,
-  MessageCircle,
-  X
+  MessageCircle
 } from 'lucide-react';
 
 interface User {
@@ -345,7 +336,7 @@ export default function Home() {
         ) : (
           <AnimatePresence>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredUsers.map((user, index) => (
+              {filteredUsers.map((user) => (
                 <motion.div
                   key={user.id}
                   variants={cardVariants}

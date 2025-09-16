@@ -357,7 +357,7 @@ export function Matches() {
                       <div className="space-y-2">
                         <h4 className="text-sm font-semibold text-white">Why you match:</h4>
                         <div className="space-y-1">
-                          {match.reasons.slice(0, 3).map((reason, reasonIndex) => (
+                          {match.reasons.slice(0, 3).map((reason: string, reasonIndex: number) => (
                             <div key={reasonIndex} className="flex items-center text-xs text-gray-300">
                               <CheckCircle className="w-3 h-3 mr-2 text-green-400 flex-shrink-0" />
                               <span className="truncate">{reason}</span>
@@ -376,12 +376,12 @@ export function Matches() {
                         <div className="space-y-2">
                           <h4 className="text-sm font-semibold text-white">Mutual Skills:</h4>
                           <div className="flex flex-wrap gap-1">
-                            {match.mutualSkills.teaching.slice(0, 2).map((skill, skillIndex) => (
+                            {match.mutualSkills.teaching.slice(0, 2).map((skill: string, skillIndex: number) => (
                               <Badge key={skillIndex} variant="secondary" className="text-xs bg-green-500/20 text-green-300 border-green-500/30">
                                 {skill}
                               </Badge>
                             ))}
-                            {match.mutualSkills.learning.slice(0, 2).map((skill, skillIndex) => (
+                            {match.mutualSkills.learning.slice(0, 2).map((skill: string, skillIndex: number) => (
                               <Badge key={skillIndex} variant="secondary" className="text-xs bg-blue-500/20 text-blue-300 border-blue-500/30">
                                 {skill}
                               </Badge>

@@ -9,16 +9,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/lib/supabase';
 import { 
   Send, 
-  Clock, 
-  MapPin, 
-  Calendar, 
   CheckCircle, 
   XCircle, 
   MessageCircle,
   Star,
   AlertCircle
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
 interface SkillExchangeRequest {

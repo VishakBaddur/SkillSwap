@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserSafety } from '@/components/ui/user-safety';
 import { supabase } from '@/lib/supabase';
-import { Send, MessageCircle, Phone, Video, MoreVertical, Flag, UserX } from 'lucide-react';
+import { Send, Phone, Video, MoreVertical, Flag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
@@ -81,8 +81,8 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
     }
   };
 
-  const setupRealtimeSubscription = () => {
-    const { data: { user } } = supabase.auth.getUser();
+  const setupRealtimeSubscription = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
     const subscription = supabase
