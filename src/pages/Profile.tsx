@@ -23,7 +23,10 @@ import {
   Users,
   Star,
   Calendar,
-  Check
+  Check,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 interface User {
@@ -87,11 +90,22 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editingSkills, setEditingSkills] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [editForm, setEditForm] = useState({
     name: '',
     bio: '',
     phone: '',
     location: '',
+  });
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
   });
   const [customSkill, setCustomSkill] = useState('');
   const { toast } = useToast();
@@ -279,6 +293,52 @@ export default function Profile() {
     if (customSkill.trim()) {
       predefinedSkills.push({ name: customSkill.trim(), category: 'other' });
       setCustomSkill('');
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    try {
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        toast({
+          title: "Error",
+          description: "New passwords do not match",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (passwordForm.newPassword.length < 6) {
+        toast({
+          title: "Error",
+          description: "New password must be at least 6 characters long",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        password: passwordForm.newPassword
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Password updated successfully",
+      });
+
+      setPasswordForm({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+      setShowPasswordChange(false);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -499,6 +559,91 @@ export default function Profile() {
                 </div>
               )}
             </CardContent>
+          </Card>
+
+          {/* Password Change Section */}
+          <Card className="bg-white/80 backdrop-blur-sm mb-6 md:mb-8">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center text-lg md:text-xl">
+                    <Lock className="w-5 h-5 mr-2 text-red-600" />
+                    Change Password
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Update your account password
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPasswordChange(!showPasswordChange)}
+                  className="touch-target"
+                >
+                  {showPasswordChange ? <X className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                  <span className="ml-2 hidden sm:inline">{showPasswordChange ? 'Cancel' : 'Change'}</span>
+                </Button>
+              </div>
+            </CardHeader>
+            {showPasswordChange && (
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="new-password" className="text-sm md:text-base">New Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="new-password"
+                        type={showPasswords.new ? "text" : "password"}
+                        value={passwordForm.newPassword}
+                        onChange={(e) => setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }))}
+                        placeholder="Enter new password"
+                        className="text-sm md:text-base pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                      >
+                        {showPasswords.new ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="confirm-password" className="text-sm md:text-base">Confirm New Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="confirm-password"
+                        type={showPasswords.confirm ? "text" : "password"}
+                        value={passwordForm.confirmPassword}
+                        onChange={(e) => setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                        placeholder="Confirm new password"
+                        className="text-sm md:text-base pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                      >
+                        {showPasswords.confirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <Button onClick={handlePasswordChange} className="w-full sm:w-auto touch-target">
+                      <Save className="w-4 h-4 mr-2" />
+                      Update Password
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowPasswordChange(false)} className="w-full sm:w-auto touch-target">
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            )}
           </Card>
 
           {/* Stats */}
