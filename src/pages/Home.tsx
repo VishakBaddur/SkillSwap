@@ -20,8 +20,7 @@ import {
   Star,
   ExternalLink,
   MessageCircle,
-  User,
-  Settings
+  User
 } from 'lucide-react';
 
 interface User {
