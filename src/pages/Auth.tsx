@@ -456,7 +456,7 @@ export default function Auth() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-              <h3 className="text-xl font-semibold text-white mb-4">Set a New Password</n>
+              <h3 className="text-xl font-semibold text-white mb-4">Set a New Password</h3>
               <p className="text-gray-300 mb-6">Enter and confirm your new password.</p>
               <div className="space-y-4">
                 <Input
