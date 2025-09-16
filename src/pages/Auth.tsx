@@ -31,6 +31,21 @@ export default function Auth() {
     if (isRecovery) {
       setShowResetPassword(true);
       setIsLogin(true);
+
+      // If Supabase provided a token/token_hash via query, verify it to ensure session is set
+      const tokenHash = queryParams.get('token_hash') || queryParams.get('token');
+      if (tokenHash) {
+        (async () => {
+          try {
+            const { error } = await supabase.auth.verifyOtp({ type: 'recovery', token_hash: tokenHash });
+            if (error) {
+              console.error('verifyOtp error', error);
+            }
+          } catch (e) {
+            console.error('verifyOtp exception', e);
+          }
+        })();
+      }
     }
   }, []);
 
