@@ -1,12 +1,12 @@
 // Service Worker for SkillSwap PWA
-const CACHE_NAME = 'skillswap-v1';
-const urlsToCache = [
+const CACHE_NAME = 'skillswap-v2';
+
+// Only cache core shell; built assets will be cached on-demand
+const CORE_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/src/main.tsx',
-  '/src/App.tsx',
-  '/src/index.css'
+  '/favicon.svg'
 ];
 
 // Install event
@@ -15,20 +15,34 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Opened cache');
-        return cache.addAll(urlsToCache);
+        return cache.addAll(CORE_URLS);
       })
   );
+  self.skipWaiting();
 });
 
 // Fetch event
 self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Only handle same-origin GET requests
+  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+
+  // Network-first for assets and pages; fall back to cache
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
+    fetch(req)
+      .then((res) => {
+        const resClone = res.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          // Cache assets under /assets and core documents
+          if (url.pathname.startsWith('/assets/') || CORE_URLS.includes(url.pathname)) {
+            cache.put(req, resClone);
+          }
+        });
+        return res;
+      })
+      .catch(() => caches.match(req).then((cached) => cached || caches.match('/index.html')))
   );
 });
 
@@ -46,4 +60,5 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
+  self.clients.claim();
 }); 
