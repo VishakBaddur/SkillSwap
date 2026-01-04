@@ -190,11 +190,11 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -206,7 +206,7 @@ export default function Auth() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -231,14 +231,14 @@ export default function Auth() {
           variants={itemVariants}
         >
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <BookOpen className="w-8 h-8 text-white" />
           </motion.div>
           <motion.h1 
-            className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
+            className="text-3xl font-bold bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent mb-2"
             variants={itemVariants}
           >
             Welcome to SkillSwap
@@ -278,7 +278,7 @@ export default function Auth() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400"
+                    className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
                   />
                 </motion.div>
 
@@ -294,7 +294,7 @@ export default function Auth() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400"
+                      className="pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
                     />
                     <motion.button
                       type="button"
@@ -316,7 +316,7 @@ export default function Auth() {
                     <motion.button
                       type="button"
                       onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-purple-300 hover:text-purple-200 transition-colors"
+                      className="text-sm text-gray-300 hover:text-gray-200 transition-colors"
                       whileHover={{ x: 2 }}
                     >
                       Forgot password?
@@ -329,7 +329,7 @@ export default function Auth() {
                      <Button
                        type="submit"
                        disabled={loading}
-                       className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg"
+                       className="w-full bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white shadow-lg"
                      >
                        {loading ? (
                          <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -352,7 +352,7 @@ export default function Auth() {
                   <motion.button
                     type="button"
                     onClick={() => setIsLogin(!isLogin)}
-                    className="text-purple-300 hover:text-purple-200 font-medium transition-colors"
+                    className="text-gray-300 hover:text-gray-200 font-medium transition-colors"
                     whileHover={{ scale: 1.05 }}
                   >
                     {isLogin ? 'Sign up' : 'Sign in'}
@@ -385,9 +385,9 @@ export default function Auth() {
         >
           <div className="grid grid-cols-3 gap-4">
             {[
-              { icon: Users, label: "Community", color: "from-blue-500 to-cyan-500" },
-              { icon: Shield, label: "Secure", color: "from-green-500 to-emerald-500" },
-              { icon: Sparkles, label: "Innovative", color: "from-purple-500 to-pink-500" }
+              { icon: Users, label: "Community", color: "from-gray-400 to-gray-600" },
+              { icon: Shield, label: "Secure", color: "from-gray-500 to-gray-700" },
+              { icon: Sparkles, label: "Innovative", color: "from-gray-500 to-gray-700" }
             ].map((feature, index) => (
               <motion.div
                 key={index}
@@ -437,7 +437,7 @@ export default function Auth() {
                   <Button
                     onClick={handleForgotPassword}
                     disabled={loading}
-                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                    className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Send Reset Link
@@ -490,7 +490,7 @@ export default function Auth() {
                   className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 />
                 <div className="flex gap-3">
-                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Update Password
                   </Button>

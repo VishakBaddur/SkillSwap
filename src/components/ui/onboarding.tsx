@@ -27,7 +27,7 @@ const steps = [
     content: (
       <div className="text-center space-y-6">
         <motion.div
-          className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto shadow-xl"
+          className="w-20 h-20 bg-gradient-to-r from-gray-500 to-gray-700 rounded-3xl flex items-center justify-center mx-auto shadow-xl"
           animate={{ rotate: [0, 10, -10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
@@ -56,13 +56,13 @@ const steps = [
             icon: Users,
             title: "Find Your Match",
             description: "Browse users and find someone who can teach what you want to learn",
-            color: "from-blue-500 to-cyan-500"
+            color: "from-gray-400 to-gray-600"
           },
           {
             icon: MessageCircle,
             title: "Connect & Chat",
             description: "Start a conversation and arrange your skill exchange session",
-            color: "from-purple-500 to-pink-500"
+            color: "from-gray-500 to-gray-700"
           },
           {
             icon: Star,
@@ -157,7 +157,7 @@ const steps = [
         </div>
         
         <div className="flex justify-center">
-          <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+          <Badge variant="secondary" className="bg-gray-100 text-gray-800">
             <Sparkles className="w-4 h-4 mr-2" />
             Pro Tip: Complete your profile to get better matches!
           </Badge>
@@ -187,11 +187,11 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const currentStepData = steps[currentStep];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -229,7 +229,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 <div
                   key={index}
                   className={`w-3 h-3 rounded-full mx-1 transition-colors ${
-                    index <= currentStep ? 'bg-purple-500' : 'bg-gray-600'
+                    index <= currentStep ? 'bg-gray-500' : 'bg-gray-600'
                   }`}
                 />
               ))}
@@ -268,7 +268,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               
               <Button
                 onClick={nextStep}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
               >
                 {currentStep === steps.length - 1 ? (
                   <>

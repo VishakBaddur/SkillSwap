@@ -37,11 +37,11 @@ export default function Index() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -53,7 +53,7 @@ export default function Index() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -78,10 +78,10 @@ export default function Index() {
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 bg-gradient-to-r from-gray-400 to-gray-600 rounded-xl flex items-center justify-center shadow-lg">
             <BookOpen className="w-6 h-6 text-white" />
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="text-2xl font-bold bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
             SkillSwap
           </span>
         </motion.div>
@@ -95,7 +95,7 @@ export default function Index() {
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link to="/auth">
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg">
+              <Button className="bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 shadow-lg">
                 Get Started
               </Button>
             </Link>
@@ -120,7 +120,7 @@ export default function Index() {
           </motion.div>
           
           <motion.h1 
-            className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent leading-tight"
+            className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent leading-tight"
             variants={itemVariants}
           >
             Trade Skills, Not Money
@@ -140,7 +140,7 @@ export default function Index() {
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link to="/auth">
-                <Button size="lg" className="text-lg px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-xl">
+                <Button size="lg" className="text-lg px-10 py-4 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 shadow-xl">
                   Start Trading Skills
                   <ArrowRight className="ml-3 w-6 h-6" />
                 </Button>
@@ -164,7 +164,7 @@ export default function Index() {
         animate={featuresInView ? "visible" : "hidden"}
       >
         <motion.div className="text-center mb-20" variants={itemVariants}>
-          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
             How It Works
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -187,8 +187,8 @@ export default function Index() {
               title: "Connect & Chat",
               description: "Start conversations and arrange skill exchange sessions",
               content: "Built-in messaging and video calling features make it easy to coordinate your skill exchange sessions and build lasting connections.",
-              color: "from-purple-500 to-pink-500",
-              bgColor: "from-purple-500/20 to-pink-500/20"
+              color: "from-gray-500 to-gray-700",
+              bgColor: "from-gray-500/20 to-gray-700/20"
             },
             {
               icon: Star,
@@ -242,10 +242,10 @@ export default function Index() {
         animate={statsInView ? "visible" : "hidden"}
       >
         <motion.div 
-          className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-3xl p-16 text-white text-center backdrop-blur-xl border border-white/10 shadow-2xl"
+          className="bg-gradient-to-r from-gray-600/20 to-gray-700/20 rounded-3xl p-16 text-white text-center backdrop-blur-xl border border-white/10 shadow-2xl"
           variants={itemVariants}
         >
-          <h2 className="text-5xl font-bold mb-12 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-bold mb-12 bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
             Join Our Growing Community
           </h2>
           <div className="grid md:grid-cols-3 gap-12">
@@ -260,10 +260,10 @@ export default function Index() {
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <div className="text-6xl font-bold mb-4 bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
                   {stat.number}
                 </div>
-                <div className="text-purple-200 text-xl">{stat.label}</div>
+                <div className="text-gray-300 text-xl">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -280,7 +280,7 @@ export default function Index() {
       >
         <div className="max-w-4xl mx-auto">
           <motion.h2 
-            className="text-5xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-8 bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent"
             variants={itemVariants}
           >
             Ready to Start Your Skill Journey?
@@ -294,7 +294,7 @@ export default function Index() {
           <motion.div variants={itemVariants}>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link to="/auth">
-                <Button size="lg" className="text-lg px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-xl">
+                <Button size="lg" className="text-lg px-12 py-4 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 shadow-xl">
                   Get Started Free
                   <ArrowRight className="ml-3 w-6 h-6" />
                 </Button>
@@ -318,7 +318,7 @@ export default function Index() {
                 className="flex items-center space-x-3 mb-6"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-gray-400 to-gray-600 rounded-xl flex items-center justify-center">
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-2xl font-bold text-white">SkillSwap</span>

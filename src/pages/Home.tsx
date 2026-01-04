@@ -198,11 +198,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -214,7 +214,7 @@ export default function Home() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -238,10 +238,10 @@ export default function Home() {
         {/* Top Navigation */}
         <motion.div className="flex justify-between items-center mb-6" variants={itemVariants}>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-r from-gray-400 to-gray-600 rounded-lg flex items-center justify-center">
               <BookOpen className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="text-lg font-bold bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
               SkillSwap
             </span>
           </div>
@@ -270,13 +270,13 @@ export default function Home() {
 
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <BookOpen className="w-8 h-8 text-white" />
           </motion.div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
             SkillSwap Dashboard
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -293,7 +293,7 @@ export default function Home() {
               placeholder="Search for skills, people, or interests..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400 focus:outline-none backdrop-blur-sm"
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400 focus:outline-none backdrop-blur-sm"
             />
           </div>
           
@@ -304,7 +304,7 @@ export default function Home() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-lg'
                     : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20'
                 }`}
                 whileHover={{ scale: 1.05 }}
@@ -326,14 +326,14 @@ export default function Home() {
         animate={statsInView ? "visible" : "hidden"}
       >
         <motion.div 
-          className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10 shadow-2xl"
+          className="bg-gradient-to-r from-gray-600/20 to-gray-700/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10 shadow-2xl"
           variants={itemVariants}
         >
           <div className="grid md:grid-cols-3 gap-8 text-center">
             {[
-              { icon: Users, number: users.length, label: "Available Users", color: "from-blue-500 to-cyan-500" },
-              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "from-purple-500 to-pink-500" },
-              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "from-green-500 to-emerald-500" }
+              { icon: Users, number: users.length, label: "Available Users", color: "from-gray-400 to-gray-600" },
+              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "from-gray-500 to-gray-700" },
+              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "from-gray-500 to-gray-700" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -344,10 +344,10 @@ export default function Home() {
                 <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
                   <stat.icon className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
                   {stat.number}
                 </div>
-                <div className="text-purple-200">{stat.label}</div>
+                <div className="text-gray-300">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -391,7 +391,7 @@ export default function Home() {
                       >
                         <Avatar className="w-20 h-20 border-4 border-white/20">
                           <AvatarImage src={user.profile_picture} />
-                          <AvatarFallback className="bg-gradient-to-r from-purple-400 to-pink-400 text-white text-2xl font-bold">
+                          <AvatarFallback className="bg-gradient-to-r from-gray-400 to-gray-600 text-white text-2xl font-bold">
                             {user.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -414,7 +414,7 @@ export default function Home() {
                               className={`text-xs ${
                                 skill.is_offering
                                   ? 'bg-green-500/20 text-green-300 border-green-500/30'
-                                  : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+                                  : 'bg-gray-400/20 text-blue-300 border-blue-500/30'
                               }`}
                             >
                               {skill.name}
@@ -433,7 +433,7 @@ export default function Home() {
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                           <Button
                             size="sm"
-                            className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                            className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white"
                             onClick={() => handleMessageUser(user)}
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
@@ -466,8 +466,8 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-12 h-12 text-purple-400" />
+            <div className="w-24 h-24 bg-gradient-to-r from-gray-500/20 to-gray-700/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-12 h-12 text-gray-400" />
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
             <p className="text-gray-400 mb-6">
@@ -478,7 +478,7 @@ export default function Home() {
                 setSearchTerm('');
                 setSelectedCategory('all');
               }}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+              className="bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
             >
               Clear Filters
             </Button>

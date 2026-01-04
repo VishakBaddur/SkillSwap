@@ -180,7 +180,7 @@ export function SkillExchangeRequest({ userId, userName, userProfilePicture, use
             <div className="flex flex-col sm:flex-row gap-3">
               <Button 
                 onClick={() => setShowRequestForm(true)}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
                 disabled={teachingSkills.length === 0 || learningSkills.length === 0}
               >
                 <Send className="w-4 h-4 mr-2" />
@@ -223,7 +223,7 @@ export function SkillExchangeRequest({ userId, userName, userProfilePicture, use
                   id="skillToLearn"
                   value={requestForm.skillToLearn}
                   onChange={(e) => setRequestForm(prev => ({ ...prev, skillToLearn: e.target.value }))}
-                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   required
                 >
                   <option value="">Select a skill...</option>
@@ -239,7 +239,7 @@ export function SkillExchangeRequest({ userId, userName, userProfilePicture, use
                   id="skillToTeach"
                   value={requestForm.skillToTeach}
                   onChange={(e) => setRequestForm(prev => ({ ...prev, skillToTeach: e.target.value }))}
-                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   required
                 >
                   <option value="">Select a skill...</option>
@@ -292,7 +292,7 @@ export function SkillExchangeRequest({ userId, userName, userProfilePicture, use
               <Button 
                 type="submit" 
                 disabled={!requestForm.skillToLearn || !requestForm.skillToTeach || sending}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
               >
                 {sending ? (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>

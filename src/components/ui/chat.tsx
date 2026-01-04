@@ -216,7 +216,7 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
       </div>
     );
   }
@@ -268,12 +268,12 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
                 >
                   <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
                     isOwn 
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
+                      ? 'bg-gradient-to-r from-gray-500 to-gray-700 text-white' 
                       : 'bg-gray-100 text-gray-900'
                   }`}>
                     <p className="text-sm">{message.content}</p>
                     <p className={`text-xs mt-1 ${
-                      isOwn ? 'text-purple-100' : 'text-gray-500'
+                      isOwn ? 'text-gray-100' : 'text-gray-500'
                     }`}>
                       {new Date(message.created_at).toLocaleTimeString([], { 
                         hour: '2-digit', 

@@ -192,9 +192,9 @@ export function Matches() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-500 mx-auto mb-4"></div>
           <p className="text-gray-300">Finding your perfect matches...</p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export function Matches() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-300">Unable to load your profile</p>
         </div>
@@ -212,11 +212,11 @@ export function Matches() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -228,7 +228,7 @@ export function Matches() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -250,13 +250,13 @@ export function Matches() {
           transition={{ duration: 0.6 }}
         >
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Sparkles className="w-8 h-8 text-white" />
           </motion.div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
             Your Perfect Matches
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -272,23 +272,23 @@ export function Matches() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {[
-            { icon: Users, number: matches.length, label: "Total Matches", color: "from-blue-500 to-cyan-500" },
-            { icon: Star, number: matches.filter(m => m.score >= 80).length, label: "Excellent Matches", color: "from-green-500 to-emerald-500" },
-            { icon: TrendingUp, number: matches.filter(m => m.score >= 60).length, label: "Great Matches", color: "from-purple-500 to-pink-500" }
+            { icon: Users, number: matches.length, label: "Total Matches", color: "from-gray-400 to-gray-600" },
+            { icon: Star, number: matches.filter(m => m.score >= 80).length, label: "Excellent Matches", color: "from-gray-500 to-gray-700" },
+            { icon: TrendingUp, number: matches.filter(m => m.score >= 60).length, label: "Great Matches", color: "from-gray-500 to-gray-700" }
           ].map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-6 backdrop-blur-xl border border-white/10 shadow-2xl text-center"
+              className="bg-gradient-to-r from-gray-600/20 to-gray-700/20 rounded-2xl p-6 backdrop-blur-xl border border-white/10 shadow-2xl text-center"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
                 <stat.icon className="w-6 h-6 text-white" />
               </div>
-              <div className="text-3xl font-bold mb-1 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <div className="text-3xl font-bold mb-1 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
                 {stat.number}
               </div>
-              <div className="text-purple-200 text-sm">{stat.label}</div>
+              <div className="text-gray-300 text-sm">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -333,7 +333,7 @@ export function Matches() {
                       >
                         <Avatar className="w-20 h-20 border-4 border-white/20">
                           <AvatarImage src={match.user.profile_picture} />
-                          <AvatarFallback className="bg-gradient-to-r from-purple-400 to-pink-400 text-white text-2xl font-bold">
+                          <AvatarFallback className="bg-gradient-to-r from-gray-400 to-gray-600 text-white text-2xl font-bold">
                             {match.user.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -382,7 +382,7 @@ export function Matches() {
                               </Badge>
                             ))}
                             {match.mutualSkills.learning.slice(0, 2).map((skill: string, skillIndex: number) => (
-                              <Badge key={skillIndex} variant="secondary" className="text-xs bg-blue-500/20 text-blue-300 border-blue-500/30">
+                              <Badge key={skillIndex} variant="secondary" className="text-xs bg-gray-400/20 text-blue-300 border-blue-500/30">
                                 {skill}
                               </Badge>
                             ))}
@@ -395,7 +395,7 @@ export function Matches() {
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                           <Button
                             size="sm"
-                            className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                            className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white"
                             onClick={() => handleMessageUser(match.user)}
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
@@ -428,14 +428,14 @@ export function Matches() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Users className="w-12 h-12 text-purple-400" />
+            <div className="w-24 h-24 bg-gradient-to-r from-gray-500/20 to-gray-700/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Users className="w-12 h-12 text-gray-400" />
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
             <p className="text-gray-400 mb-6">
               Try adding more skills to your profile to find better matches
             </p>
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+            <Button className="bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800">
               <ArrowRight className="w-4 h-4 mr-2" />
               Update Profile
             </Button>
