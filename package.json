@@ -20,7 +20,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "postbuild": "echo 'Build completed successfully!'"
+    "postbuild": "echo 'Build completed successfully!'",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@capacitor/cli": "^7.4.2",
@@ -78,20 +82,25 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
     "@types/node": "^20.0.0",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/ui": "^4.0.16",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "jsdom": "^27.4.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.2.0",
     "vite": "^5.3.1",
-    "vite-plugin-pwa": "^0.19.0"
+    "vite-plugin-pwa": "^0.19.0",
+    "vitest": "^4.0.16"
   }
 }

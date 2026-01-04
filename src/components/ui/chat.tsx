@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserSafety } from '@/components/ui/user-safety';
 import { supabase } from '@/lib/supabase';
+import { executeQuery, executeMutation } from '@/lib/supabase-client';
+import { useErrorMonitor } from '@/lib/error-monitor';
 import { Send, Phone, Video, MoreVertical, Flag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
@@ -37,11 +39,24 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
   const [sending, setSending] = useState(false);
   const [showSafety, setShowSafety] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const subscriptionRef = useRef<any>(null);
   const { toast } = useToast();
+  const { reportError, withRetry } = useErrorMonitor();
 
   useEffect(() => {
     fetchMessages();
-    setupRealtimeSubscription();
+    let cleanup: (() => void) | undefined;
+    
+    setupRealtimeSubscription().then((cleanupFn) => {
+      cleanup = cleanupFn;
+    });
+
+    return () => {
+      if (cleanup) cleanup();
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+      }
+    };
   }, [userId]);
 
   useEffect(() => {
@@ -58,29 +73,30 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      console.log('🔍 Debug - Fetching messages for user:', user.id, 'with target user:', userId);
+      const data = await withRetry(
+        'fetchMessages',
+        () => executeQuery<Message[]>(
+          'fetchMessages',
+          async () => {
+            const result = await supabase
+              .from('messages')
+              .select(`
+                *,
+                sender:users!messages_sender_id_fkey(name, profile_picture)
+              `)
+              .or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`)
+              .order('created_at', { ascending: true });
+            return result;
+          }
+        )
+      );
 
-      const { data, error } = await supabase
-        .from('messages')
-        .select(`
-          *,
-          sender:users!messages_sender_id_fkey(name, profile_picture)
-        `)
-        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`)
-        .order('created_at', { ascending: true });
-
-      if (error) {
-        console.error('🔍 Debug - Supabase error:', error);
-        throw error;
-      }
-
-      console.log('🔍 Debug - Messages fetched successfully:', data);
       setMessages(data || []);
     } catch (error: any) {
-      console.error('Error fetching messages:', error);
+      reportError(error, { operation: 'fetchMessages', component: 'Chat' });
       toast({
         title: "Error",
-        description: `Failed to load messages: ${error.message}`,
+        description: `Failed to load messages. Please try again.`,
         variant: "destructive",
       });
     } finally {
@@ -88,32 +104,65 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
     }
   };
 
-  const setupRealtimeSubscription = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+  const setupRealtimeSubscription = async (): Promise<(() => void) | undefined> => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    const subscription = supabase
-      .channel('messages')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-          filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`,
-        },
-        (payload) => {
-          const newMessage = payload.new as Message;
-          if (newMessage.sender_id === userId || newMessage.receiver_id === userId) {
-            setMessages(prev => [...prev, newMessage]);
+      // Clean up existing subscription
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+      }
+
+      const subscription = supabase
+        .channel(`messages-${user.id}-${userId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'messages',
+            filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`,
+          },
+          (payload) => {
+            try {
+              const newMessage = payload.new as Message;
+              if (newMessage.sender_id === userId || newMessage.receiver_id === userId) {
+                setMessages(prev => {
+                  // Avoid duplicates
+                  if (prev.some(m => m.id === newMessage.id)) {
+                    return prev;
+                  }
+                  return [...prev, newMessage];
+                });
+              }
+            } catch (error) {
+              reportError(error, { operation: 'realtimeMessageHandler', component: 'Chat' });
+            }
           }
-        }
-      )
-      .subscribe();
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('[Chat] Real-time subscription active');
+          } else if (status === 'CHANNEL_ERROR') {
+            reportError(new Error('Real-time subscription error'), {
+              operation: 'setupRealtimeSubscription',
+              component: 'Chat',
+            });
+          }
+        });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+      subscriptionRef.current = subscription;
+
+      return () => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      };
+    } catch (error) {
+      reportError(error, { operation: 'setupRealtimeSubscription', component: 'Chat' });
+      return () => {};
+    }
   };
 
   const sendMessage = async (e: React.FormEvent) => {
@@ -125,22 +174,30 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase
-        .from('messages')
-        .insert({
-          sender_id: user.id,
-          receiver_id: userId,
-          content: newMessage.trim(),
-        });
-
-      if (error) throw error;
+      await withRetry(
+        'sendMessage',
+        () => executeMutation<Message[]>(
+          'sendMessage',
+          async () => {
+            const result = await supabase
+              .from('messages')
+              .insert({
+                sender_id: user.id,
+                receiver_id: userId,
+                content: newMessage.trim(),
+              })
+              .select();
+            return result;
+          }
+        )
+      );
 
       setNewMessage('');
     } catch (error: any) {
-      console.error('Error sending message:', error);
+      reportError(error, { operation: 'sendMessage', component: 'Chat' });
       toast({
         title: "Error",
-        description: "Failed to send message",
+        description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
     } finally {
