@@ -11,7 +11,6 @@ import { SkillExchangeRequest } from '@/components/ui/skill-exchange';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import { 
   BookOpen, 
   Search, 
@@ -53,10 +52,6 @@ export default function Home() {
   const [showChat, setShowChat] = useState(false);
   const [showSkillExchange, setShowSkillExchange] = useState(false);
   const { toast } = useToast();
-  
-  const [headerRef, headerInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [statsRef, statsInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [usersRef, usersInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
   useEffect(() => {
     fetchUsers();
