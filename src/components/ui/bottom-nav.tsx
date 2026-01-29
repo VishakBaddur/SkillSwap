@@ -41,7 +41,7 @@ export function BottomNavigation() {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/80 backdrop-blur-md border-t border-gray-200/50 shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-lg">
       <div className="flex items-center justify-around px-2 py-2">
         {navItems.map((item) => {
           const isActive = location.pathname === item.href;
@@ -54,8 +54,8 @@ export function BottomNavigation() {
               className={cn(
                 "flex flex-col items-center justify-center w-full h-16 rounded-xl transition-all duration-200 ease-in-out touch-target",
                 isActive
-                  ? "text-primary bg-primary/10"
-                  : "text-gray-600 hover:text-primary hover:bg-gray-50"
+                  ? "text-gray-900 bg-gray-50"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               )}
             >
               <Icon

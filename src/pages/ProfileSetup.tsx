@@ -202,16 +202,16 @@ export default function ProfileSetup() {
   const progress = (step / totalSteps) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b">
+      <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-gray-500 to-gray-700 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">
+              <span className="text-lg font-semibold text-gray-900">
                 SkillSwap
               </span>
             </Link>
@@ -239,7 +239,7 @@ export default function ProfileSetup() {
           </div>
 
           {/* Step Content */}
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white border border-gray-200 shadow-sm">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-xl md:text-2xl font-bold">
                 {step === 1 && 'Basic Information'}
@@ -449,34 +449,34 @@ export default function ProfileSetup() {
           {/* Stats Preview */}
           {(step === 2 || step === 3) && (
             <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Card className="bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold">{teachingSkills.length}</p>
+                      <p className="text-lg md:text-2xl font-bold text-gray-900">{teachingSkills.length}</p>
                       <p className="text-xs md:text-sm text-gray-600">Teaching Skills</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <Users className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold">{learningSkills.length}</p>
+                      <p className="text-lg md:text-2xl font-bold text-gray-900">{learningSkills.length}</p>
                       <p className="text-xs md:text-sm text-gray-600">Learning Skills</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold">{teachingSkills.length + learningSkills.length}</p>
+                      <p className="text-lg md:text-2xl font-bold text-gray-900">{teachingSkills.length + learningSkills.length}</p>
                       <p className="text-xs md:text-sm text-gray-600">Total Skills</p>
                     </div>
                   </div>

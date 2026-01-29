@@ -68,7 +68,6 @@ export default function Home() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Fetch users with their skills
       const { data: usersData, error } = await supabase
         .from('users')
         .select(`
@@ -97,7 +96,6 @@ export default function Home() {
         throw error;
       }
 
-      // Transform the data
       const transformedUsers = usersData?.map(user => ({
         id: user.id,
         name: user.name,
@@ -161,207 +159,110 @@ export default function Home() {
     setSelectedUser(null);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { y: 50, opacity: 0, scale: 0.9 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-white overflow-hidden">
       {/* Header Section */}
-      <motion.header 
-        ref={headerRef}
-        className="container mx-auto px-4 py-8 relative z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate={headerInView ? "visible" : "hidden"}
-      >
-        {/* Top Navigation */}
-        <motion.div className="flex justify-between items-center mb-6" variants={itemVariants}>
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-gray-400 to-gray-600 rounded-lg flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-white" />
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          {/* Top Navigation */}
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-lg font-semibold text-gray-900">
+                SkillSwap
+              </span>
             </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
-              SkillSwap
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Link to="/profile">
+            <div className="flex items-center space-x-2">
+              <Link to="/profile">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">Profile</span>
+                </Button>
+              </Link>
               <Button 
                 variant="outline" 
                 size="sm"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                onClick={() => supabase.auth.signOut()}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
-                <User className="w-4 h-4 mr-2" />
-                <span className="hidden sm:inline">Profile</span>
+                <span className="hidden sm:inline">Sign Out</span>
+                <span className="sm:hidden">Out</span>
               </Button>
-            </Link>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => supabase.auth.signOut()}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-            >
-              <span className="hidden sm:inline">Sign Out</span>
-              <span className="sm:hidden">Out</span>
-            </Button>
+            </div>
           </div>
-        </motion.div>
 
-        <motion.div className="text-center mb-8" variants={itemVariants}>
-          <motion.div 
-            className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <BookOpen className="w-8 h-8 text-white" />
-          </motion.div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
-            SkillSwap Dashboard
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Discover amazing people and start trading skills today
-          </p>
-        </motion.div>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-gray-900">
+              SkillSwap Dashboard
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover amazing people and start trading skills today
+            </p>
+          </div>
 
-        {/* Search and Filter */}
-        <motion.div className="max-w-4xl mx-auto space-y-4" variants={itemVariants}>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search for skills, people, or interests..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400 focus:outline-none backdrop-blur-sm"
-            />
+          {/* Search and Filter */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search for skills, people, or interests..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900 focus:outline-none"
+              />
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedCategory === category
+                      ? 'bg-black text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                  }`}
+                >
+                  {category === 'all' ? 'All Categories' : category}
+                </button>
+              ))}
+            </div>
           </div>
-          
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  selectedCategory === category
-                    ? 'bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-lg'
-                    : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {category === 'all' ? 'All Categories' : category}
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
-      </motion.header>
+        </div>
+      </header>
 
       {/* Stats Section */}
-      <motion.section 
-        ref={statsRef}
-        className="container mx-auto px-4 py-12 relative z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate={statsInView ? "visible" : "hidden"}
-      >
-        <motion.div 
-          className="bg-gradient-to-r from-gray-600/20 to-gray-700/20 rounded-2xl p-8 backdrop-blur-xl border border-white/10 shadow-2xl"
-          variants={itemVariants}
-        >
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-gray-50 rounded-xl p-8 border border-gray-200">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             {[
-              { icon: Users, number: users.length, label: "Available Users", color: "from-gray-400 to-gray-600" },
-              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "from-gray-500 to-gray-700" },
-              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "from-gray-500 to-gray-700" }
+              { icon: Users, number: users.length, label: "Available Users", color: "text-gray-900" },
+              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "text-gray-900" },
+              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "text-gray-900" }
             ].map((stat, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
-                  <stat.icon className="w-8 h-8 text-white" />
+              <div key={index}>
+                <div className={`w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
-                <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
+                <div className="text-3xl font-bold mb-2 text-gray-900">
                   {stat.number}
                 </div>
-                <div className="text-gray-300">{stat.label}</div>
-              </motion.div>
+                <div className="text-gray-600">{stat.label}</div>
+              </div>
             ))}
           </div>
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
       {/* Users Grid */}
-      <motion.section 
-        ref={usersRef}
-        className="container mx-auto px-4 py-12 relative z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate={usersInView ? "visible" : "hidden"}
-      >
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
@@ -374,30 +275,26 @@ export default function Home() {
               {filteredUsers.map((user) => (
                 <motion.div
                   key={user.id}
-                  variants={cardVariants}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
                   whileHover={{ 
-                    y: -10,
-                    scale: 1.02,
+                    y: -5,
                     transition: { type: "spring", stiffness: 300, damping: 20 }
                   }}
-                  layout
                 >
-                  <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl h-full overflow-hidden">
+                  <Card className="border border-gray-200 shadow-sm bg-white h-full hover:shadow-md transition-shadow">
                     <CardHeader className="text-center pb-4">
-                      <motion.div 
-                        className="w-20 h-20 mx-auto mb-4"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        <Avatar className="w-20 h-20 border-4 border-white/20">
+                      <div className="w-20 h-20 mx-auto mb-4">
+                        <Avatar className="w-20 h-20 border-2 border-gray-200">
                           <AvatarImage src={user.profile_picture} />
-                          <AvatarFallback className="bg-gradient-to-r from-gray-400 to-gray-600 text-white text-2xl font-bold">
+                          <AvatarFallback className="bg-gray-100 text-gray-900 text-xl font-semibold">
                             {user.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
-                      </motion.div>
-                      <CardTitle className="text-xl text-white mb-2">{user.name}</CardTitle>
-                      <CardDescription className="text-gray-300 text-sm leading-relaxed">
+                      </div>
+                      <CardTitle className="text-xl text-gray-900 mb-2">{user.name}</CardTitle>
+                      <CardDescription className="text-gray-600 text-sm leading-relaxed">
                         {user.bio || 'No bio available'}
                       </CardDescription>
                     </CardHeader>
@@ -405,7 +302,7 @@ export default function Home() {
                     <CardContent className="space-y-4">
                       {/* Skills */}
                       <div className="space-y-3">
-                        <h4 className="text-sm font-semibold text-white">Skills</h4>
+                        <h4 className="text-sm font-semibold text-gray-900">Skills</h4>
                         <div className="flex flex-wrap gap-2">
                           {user.skills.slice(0, 3).map((skill) => (
                             <Badge
@@ -413,15 +310,15 @@ export default function Home() {
                               variant="secondary"
                               className={`text-xs ${
                                 skill.is_offering
-                                  ? 'bg-green-500/20 text-green-300 border-green-500/30'
-                                  : 'bg-gray-400/20 text-blue-300 border-blue-500/30'
+                                  ? 'bg-green-50 text-green-700 border-green-200'
+                                  : 'bg-blue-50 text-blue-700 border-blue-200'
                               }`}
                             >
                               {skill.name}
                             </Badge>
                           ))}
                           {user.skills.length > 3 && (
-                            <Badge variant="secondary" className="text-xs bg-gray-500/20 text-gray-300">
+                            <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
                               +{user.skills.length - 3} more
                             </Badge>
                           )}
@@ -430,26 +327,22 @@ export default function Home() {
 
                       {/* Contact Actions */}
                       <div className="flex gap-2 pt-2">
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white"
-                            onClick={() => handleMessageUser(user)}
-                          >
-                            <MessageCircle className="w-4 h-4 mr-2" />
-                            Message
-                          </Button>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 text-white hover:bg-white/10"
-                            onClick={() => handleSkillExchange(user)}
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </Button>
-                        </motion.div>
+                        <Button
+                          size="sm"
+                          className="flex-1 bg-black text-white hover:bg-gray-800"
+                          onClick={() => handleMessageUser(user)}
+                        >
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          Message
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                          onClick={() => handleSkillExchange(user)}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -460,17 +353,12 @@ export default function Home() {
         )}
 
         {!loading && filteredUsers.length === 0 && (
-          <motion.div 
-            className="text-center py-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="w-24 h-24 bg-gradient-to-r from-gray-500/20 to-gray-700/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search className="w-12 h-12 text-gray-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
-            <p className="text-gray-400 mb-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">No matches found</h3>
+            <p className="text-gray-600 mb-6">
               Try adjusting your search terms or category filters
             </p>
             <Button
@@ -478,13 +366,13 @@ export default function Home() {
                 setSearchTerm('');
                 setSelectedCategory('all');
               }}
-              className="bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
+              className="bg-black text-white hover:bg-gray-800"
             >
               Clear Filters
             </Button>
-          </motion.div>
+          </div>
         )}
-      </motion.section>
+      </section>
 
       {/* Bottom Navigation */}
       <BottomNavigation />
@@ -500,10 +388,9 @@ export default function Home() {
           >
             <motion.div
               className="w-full max-w-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
               <Chat
                 userId={selectedUser.id}
@@ -527,10 +414,9 @@ export default function Home() {
           >
             <motion.div
               className="w-full max-w-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
               <SkillExchangeRequest
                 userId={selectedUser.id}
@@ -545,4 +431,4 @@ export default function Home() {
       </AnimatePresence>
     </div>
   );
-} 
+}

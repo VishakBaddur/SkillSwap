@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
-import { BookOpen, Eye, EyeOff, Loader2, Sparkles, Zap, Shield, Users } from 'lucide-react';
+import { BookOpen, Eye, EyeOff, Loader2, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Auth() {
@@ -32,7 +32,6 @@ export default function Auth() {
       setShowResetPassword(true);
       setIsLogin(true);
 
-      // If Supabase provided a token/token_hash via query, verify it to ensure session is set
       const tokenHash = queryParams.get('token_hash') || queryParams.get('token');
       if (tokenHash) {
         (async () => {
@@ -104,7 +103,6 @@ export default function Auth() {
 
     setLoading(true);
     try {
-      // Use the main site URL as redirect, then handle the token in our app
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth`,
       });
@@ -113,7 +111,7 @@ export default function Auth() {
 
       toast({
         title: "Password Reset Sent",
-        description: "Check your email for a password reset link. Click it and you'll be redirected to set a new password.",
+        description: "Check your email for a password reset link.",
       });
       setShowForgotPassword(false);
     } catch (error: any) {
@@ -153,7 +151,6 @@ export default function Auth() {
       toast({ title: 'Password updated', description: 'You can now sign in with your new password.' });
       setShowResetPassword(false);
 
-      // Clean URL of recovery params
       const url = new URL(window.location.href);
       url.hash = '';
       url.searchParams.delete('type');
@@ -167,242 +164,131 @@ export default function Auth() {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-gray-500/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <motion.div 
-        className="w-full max-w-md relative z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        className="w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         {/* Logo and Title */}
-        <motion.div 
-          className="text-center mb-8"
-          variants={itemVariants}
-        >
-          <motion.div 
-            className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <BookOpen className="w-8 h-8 text-white" />
-          </motion.div>
-          <motion.h1 
-            className="text-3xl font-bold bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent mb-2"
-            variants={itemVariants}
-          >
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-6 h-6 text-white" />
+          </div>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
             Welcome to SkillSwap
-          </motion.h1>
-          <motion.p 
-            className="text-gray-300"
-            variants={itemVariants}
-          >
+          </h1>
+          <p className="text-gray-600">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Auth Card */}
-        <motion.div variants={itemVariants}>
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl text-white">
-                {isLogin ? 'Sign In' : 'Sign Up'}
-              </CardTitle>
-              <CardDescription className="text-gray-300">
-                {isLogin 
-                  ? 'Access your skill exchange dashboard' 
-                  : 'Start your skill trading journey'
-                }
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <motion.div variants={itemVariants}>
-                  <Label htmlFor="email" className="text-white text-sm font-medium">
-                    Email Address
-                  </Label>
+        <Card className="border border-gray-200 shadow-sm">
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl text-gray-900">
+              {isLogin ? 'Sign In' : 'Sign Up'}
+            </CardTitle>
+            <CardDescription className="text-gray-600">
+              {isLogin 
+                ? 'Access your skill exchange dashboard' 
+                : 'Start your skill trading journey'
+              }
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
+                  Password
+                </Label>
+                <div className="relative mt-2">
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
+                    className="pr-12 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
                   />
-                </motion.div>
-
-                <motion.div variants={itemVariants}>
-                  <Label htmlFor="password" className="text-white text-sm font-medium">
-                    Password
-                  </Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
-                    />
-                    <motion.button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </motion.button>
-                  </div>
-                </motion.div>
-
-                {isLogin && (
-                  <motion.div 
-                    className="flex justify-end"
-                    variants={itemVariants}
-                  >
-                    <motion.button
-                      type="button"
-                      onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-gray-300 hover:text-gray-200 transition-colors"
-                      whileHover={{ x: 2 }}
-                    >
-                      Forgot password?
-                    </motion.button>
-                  </motion.div>
-                )}
-
-                                 <motion.div variants={itemVariants}>
-                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                     <Button
-                       type="submit"
-                       disabled={loading}
-                       className="w-full bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white shadow-lg"
-                     >
-                       {loading ? (
-                         <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                       ) : (
-                         <Zap className="w-5 h-5 mr-2" />
-                       )}
-                       {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
-                     </Button>
-                   </motion.div>
-                 </motion.div>
-              </form>
-
-              {/* Toggle Auth Mode */}
-              <motion.div 
-                className="text-center pt-4 border-t border-white/10"
-                variants={itemVariants}
-              >
-                <p className="text-gray-300">
-                  {isLogin ? "Don't have an account? " : "Already have an account? "}
-                  <motion.button
+                  <button
                     type="button"
-                    onClick={() => setIsLogin(!isLogin)}
-                    className="text-gray-300 hover:text-gray-200 font-medium transition-colors"
-                    whileHover={{ scale: 1.05 }}
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    {isLogin ? 'Sign up' : 'Sign in'}
-                  </motion.button>
-                </p>
-              </motion.div>
-
-              {/* Back to Home */}
-              <motion.div 
-                className="text-center"
-                variants={itemVariants}
-              >
-                <Link to="/">
-                  <motion.button
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                    whileHover={{ x: -2 }}
-                  >
-                    ← Back to Home
-                  </motion.button>
-                </Link>
-              </motion.div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Features Preview */}
-        <motion.div 
-          className="mt-8 text-center"
-          variants={itemVariants}
-        >
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { icon: Users, label: "Community", color: "from-gray-400 to-gray-600" },
-              { icon: Shield, label: "Secure", color: "from-gray-500 to-gray-700" },
-              { icon: Sparkles, label: "Innovative", color: "from-gray-500 to-gray-700" }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
-                  <feature.icon className="w-6 h-6 text-white" />
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
                 </div>
-                <p className="text-xs text-gray-400">{feature.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+              </div>
+
+              {isLogin && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotPassword(true)}
+                    className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-black text-white hover:bg-gray-800"
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                ) : (
+                  <Zap className="w-5 h-5 mr-2" />
+                )}
+                {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
+              </Button>
+            </form>
+
+            {/* Toggle Auth Mode */}
+            <div className="text-center pt-4 border-t border-gray-200">
+              <p className="text-gray-600 text-sm">
+                {isLogin ? "Don't have an account? " : "Already have an account? "}
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-gray-900 hover:text-gray-700 font-medium transition-colors"
+                >
+                  {isLogin ? 'Sign up' : 'Sign in'}
+                </button>
+              </p>
+            </div>
+
+            {/* Back to Home */}
+            <div className="text-center">
+              <Link to="/">
+                <button className="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                  ← Back to Home
+                </button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Forgot Password Modal */}
@@ -415,14 +301,13 @@ export default function Auth() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full border border-gray-200 shadow-lg"
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
-              <h3 className="text-xl font-semibold text-white mb-4">Reset Password</h3>
-              <p className="text-gray-300 mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Reset Password</h3>
+              <p className="text-gray-600 mb-6 text-sm">
                 Enter your email address and we'll send you a link to reset your password.
               </p>
               <div className="space-y-4">
@@ -431,13 +316,13 @@ export default function Auth() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900"
                 />
                 <div className="flex gap-3">
                   <Button
                     onClick={handleForgotPassword}
                     disabled={loading}
-                    className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
+                    className="flex-1 bg-black text-white hover:bg-gray-800"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Send Reset Link
@@ -445,7 +330,7 @@ export default function Auth() {
                   <Button
                     variant="outline"
                     onClick={() => setShowForgotPassword(false)}
-                    className="border-white/20 text-white hover:bg-white/10"
+                    className="border-gray-300 text-gray-700 hover:bg-gray-50"
                   >
                     Cancel
                   </Button>
@@ -456,7 +341,7 @@ export default function Auth() {
         )}
       </AnimatePresence>
 
-      {/* Reset Password Modal (for recovery links) */}
+      {/* Reset Password Modal */}
       <AnimatePresence>
         {showResetPassword && (
           <motion.div
@@ -466,35 +351,34 @@ export default function Auth() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full border border-gray-200 shadow-lg"
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
-              <h3 className="text-xl font-semibold text-white mb-4">Set a New Password</h3>
-              <p className="text-gray-300 mb-6">Enter and confirm your new password.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Set a New Password</h3>
+              <p className="text-gray-600 mb-6 text-sm">Enter and confirm your new password.</p>
               <div className="space-y-4">
                 <Input
                   type="password"
                   placeholder="New password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900"
                 />
                 <Input
                   type="password"
                   placeholder="Confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900"
                 />
                 <div className="flex gap-3">
-                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800">
+                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-black text-white hover:bg-gray-800">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Update Password
                   </Button>
-                  <Button variant="outline" onClick={() => setShowResetPassword(false)} className="border-white/20 text-white hover:bg-white/10">
+                  <Button variant="outline" onClick={() => setShowResetPassword(false)} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                     Cancel
                   </Button>
                 </div>
@@ -505,4 +389,4 @@ export default function Auth() {
       </AnimatePresence>
     </div>
   );
-} 
+}

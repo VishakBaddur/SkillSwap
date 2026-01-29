@@ -108,14 +108,14 @@ export default function ResetPassword() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <motion.div
           className="w-full max-w-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl">
+          <Card className="border border-gray-200 shadow-sm bg-white">
             <CardContent className="p-8 text-center">
               <motion.div
                 initial={{ scale: 0 }}
@@ -125,13 +125,13 @@ export default function ResetPassword() {
               >
                 <CheckCircle className="w-8 h-8 text-white" />
               </motion.div>
-              <h2 className="text-2xl font-bold text-white mb-4">Password Updated!</h2>
-              <p className="text-gray-300 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Password Updated!</h2>
+              <p className="text-gray-600 mb-6">
                 Your password has been successfully updated. You can now sign in with your new password.
               </p>
               <Button
                 onClick={() => navigate('/auth')}
-                className="w-full bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800"
+                className="w-full bg-black text-white hover:bg-gray-800"
               >
                 Sign In
               </Button>
@@ -143,7 +143,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -151,32 +151,27 @@ export default function ResetPassword() {
         transition={{ duration: 0.5 }}
       >
         {/* Logo */}
-        <motion.div
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
-            <BookOpen className="w-8 h-8 text-white" />
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-semibold text-gray-900">
             Reset Password
           </h1>
-        </motion.div>
+        </div>
 
         {/* Reset Form */}
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl">
+        <Card className="border border-gray-200 shadow-sm bg-white">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-white">Set New Password</CardTitle>
-            <CardDescription className="text-gray-300">
+            <CardTitle className="text-xl text-gray-900">Set New Password</CardTitle>
+            <CardDescription className="text-gray-600">
               Enter your new password below
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleResetPassword} className="space-y-4">
               <div>
-                <Label htmlFor="password" className="text-white text-sm font-medium">
+                <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
                   New Password
                 </Label>
                 <Input
@@ -186,12 +181,12 @@ export default function ResetPassword() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
+                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
                 />
               </div>
 
               <div>
-                <Label htmlFor="confirmPassword" className="text-white text-sm font-medium">
+                <Label htmlFor="confirmPassword" className="text-gray-700 text-sm font-medium">
                   Confirm Password
                 </Label>
                 <Input
@@ -201,14 +196,14 @@ export default function ResetPassword() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-gray-400 focus:ring-gray-400"
+                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white shadow-lg"
+                className="w-full bg-black text-white hover:bg-gray-800"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -221,7 +216,7 @@ export default function ResetPassword() {
               <Button
                 variant="ghost"
                 onClick={() => navigate('/auth')}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-600 hover:text-gray-900"
               >
                 ← Back to Sign In
               </Button>

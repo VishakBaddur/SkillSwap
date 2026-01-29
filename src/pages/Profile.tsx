@@ -344,27 +344,28 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100">
+      <div className="min-h-screen bg-white">
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b">
+        <header className="bg-white border-b border-gray-200">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-gray-500 to-gray-700 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                   <BookOpen className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">
+                <span className="text-lg font-semibold text-gray-900">
                   SkillSwap
                 </span>
               </Link>
               <div className="flex items-center space-x-2 md:space-x-4">
                 <Link to="/home">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Home</Button>
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-gray-700 hover:text-gray-900">Home</Button>
                 </Link>
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => supabase.auth.signOut()}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
                   <span className="hidden sm:inline">Sign Out</span>
                   <span className="sm:hidden">Out</span>
@@ -376,7 +377,7 @@ export default function Profile() {
 
         <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-white/80 backdrop-blur-sm mb-6 md:mb-8">
+            <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
               <CardContent className="p-4 md:p-8">
                 <ProfileSkeleton />
               </CardContent>
@@ -385,24 +386,24 @@ export default function Profile() {
             <StatsSkeleton className="mb-6 md:mb-8" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-              <Card className="bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
                   <div className="space-y-4">
-                    <div className="h-6 w-32 bg-gray-200 rounded-xl animate-pulse"></div>
+                    <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
                     <div className="space-y-2">
-                      <div className="h-4 w-full bg-gray-200 rounded-xl animate-pulse"></div>
-                      <div className="h-4 w-3/4 bg-gray-200 rounded-xl animate-pulse"></div>
+                      <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse"></div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
                   <div className="space-y-4">
-                    <div className="h-6 w-32 bg-gray-200 rounded-xl animate-pulse"></div>
+                    <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
                     <div className="space-y-2">
-                      <div className="h-4 w-full bg-gray-200 rounded-xl animate-pulse"></div>
-                      <div className="h-4 w-3/4 bg-gray-200 rounded-xl animate-pulse"></div>
+                      <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse"></div>
                     </div>
                   </div>
                 </CardContent>
@@ -418,7 +419,7 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600">User not found</p>
         </div>
@@ -427,27 +428,28 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 pb-20 md:pb-0">
+    <div className="min-h-screen bg-white pb-20 md:pb-0">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b">
+      <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-gray-500 to-gray-700 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">
+              <span className="text-lg font-semibold text-gray-900">
                 SkillSwap
               </span>
             </Link>
             <div className="flex items-center space-x-2 md:space-x-4">
               <Link to="/home">
-                <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Home</Button>
+                <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-gray-700 hover:text-gray-900">Home</Button>
               </Link>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => supabase.auth.signOut()}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <span className="hidden sm:inline">Sign Out</span>
                 <span className="sm:hidden">Out</span>
@@ -460,7 +462,7 @@ export default function Profile() {
       <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
-          <Card className="bg-white/80 backdrop-blur-sm mb-6 md:mb-8">
+          <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
             <CardContent className="p-4 md:p-8">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-4 sm:mb-0">
@@ -562,7 +564,7 @@ export default function Profile() {
           </Card>
 
           {/* Password Change Section */}
-          <Card className="bg-white/80 backdrop-blur-sm mb-6 md:mb-8">
+          <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -648,34 +650,34 @@ export default function Profile() {
 
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold">{skills.filter(s => s.is_offering).length}</p>
+                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.filter(s => s.is_offering).length}</p>
                     <p className="text-xs md:text-sm text-gray-600">Skills Teaching</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
                   <Users className="w-5 h-5 text-blue-600" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold">{skills.filter(s => s.is_learning).length}</p>
+                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.filter(s => s.is_learning).length}</p>
                     <p className="text-xs md:text-sm text-gray-600">Skills Learning</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
                   <Star className="w-5 h-5 text-yellow-600" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold">{skills.length}</p>
+                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.length}</p>
                     <p className="text-xs md:text-sm text-gray-600">Total Skills</p>
                   </div>
                 </div>
@@ -686,7 +688,7 @@ export default function Profile() {
           {/* Skills Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Teaching Skills */}
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -782,7 +784,7 @@ export default function Profile() {
             </Card>
 
             {/* Learning Skills */}
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div>
