@@ -15,7 +15,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && npx vite build",
+    "build": "npm install && tsc && npx vite build",
     "build:production": "tsc && npx vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
