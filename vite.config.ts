@@ -35,7 +35,7 @@ export default defineConfig({
     host: 'localhost'
   },
   preview: {
-    port: 3000,
-    host: 'localhost'
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+    host: '0.0.0.0'
   }
 }) 
