@@ -344,28 +344,28 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen relative">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200">
+        <header className="bg-black/50 backdrop-blur-sm border-b border-white/10">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
                   <BookOpen className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-gray-900">
+                <span className="text-lg font-semibold text-white">
                   SkillSwap
                 </span>
               </Link>
               <div className="flex items-center space-x-2 md:space-x-4">
                 <Link to="/home">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-gray-700 hover:text-gray-900">Home</Button>
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-white/80 hover:text-white">Home</Button>
                 </Link>
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => supabase.auth.signOut()}
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="border-white/20 text-white hover:bg-white/10"
                 >
                   <span className="hidden sm:inline">Sign Out</span>
                   <span className="sm:hidden">Out</span>
@@ -377,7 +377,7 @@ export default function Profile() {
 
         <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
+            <Card className="glass-card mb-6 md:mb-8">
               <CardContent className="p-4 md:p-8">
                 <ProfileSkeleton />
               </CardContent>
@@ -419,37 +419,37 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">User not found</p>
+      <div className="min-h-screen flex items-center justify-center relative">
+        <div className="text-center relative z-10">
+          <p className="text-white/70">User not found</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white pb-20 md:pb-0">
+    <div className="min-h-screen pb-20 md:pb-0 relative">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black/50 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-white">
                 SkillSwap
               </span>
             </Link>
             <div className="flex items-center space-x-2 md:space-x-4">
               <Link to="/home">
-                <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-gray-700 hover:text-gray-900">Home</Button>
+                <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-white/80 hover:text-white">Home</Button>
               </Link>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => supabase.auth.signOut()}
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="border-white/20 text-white hover:bg-white/10"
               >
                 <span className="hidden sm:inline">Sign Out</span>
                 <span className="sm:hidden">Out</span>
@@ -462,7 +462,7 @@ export default function Profile() {
       <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
-          <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
+          <Card className="glass-card mb-6 md:mb-8">
             <CardContent className="p-4 md:p-8">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-4 sm:mb-0">
@@ -471,9 +471,9 @@ export default function Profile() {
                     <AvatarFallback className="text-xl md:text-2xl">{user.name?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="text-center sm:text-left">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{user.name}</h1>
-                    <p className="text-gray-600 mb-2 text-sm md:text-base">{user.email}</p>
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-gray-500">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2 text-white">{user.name}</h1>
+                    <p className="text-white/70 mb-2 text-sm md:text-base">{user.email}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-white/60">
                       {user.location && (
                         <div className="flex items-center justify-center sm:justify-start">
                           <MapPin className="w-4 h-4 mr-1" />
@@ -551,9 +551,9 @@ export default function Profile() {
                 </div>
               ) : (
                 <div>
-                  <p className="text-gray-700 mb-4 text-sm md:text-base">{user.bio || "No bio yet. Click edit to add one!"}</p>
+                  <p className="text-white/80 mb-4 text-sm md:text-base">{user.bio || "No bio yet. Click edit to add one!"}</p>
                   {user.phone && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600 mb-2">
+                    <div className="flex items-center space-x-2 text-sm text-white/70 mb-2">
                       <Phone className="w-4 h-4" />
                       <span>{user.phone}</span>
                     </div>
@@ -564,7 +564,7 @@ export default function Profile() {
           </Card>
 
           {/* Password Change Section */}
-          <Card className="bg-white border border-gray-200 shadow-sm mb-6 md:mb-8">
+          <Card className="glass-card mb-6 md:mb-8">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -650,35 +650,35 @@ export default function Profile() {
 
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            <Card className="glass-card">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  <TrendingUp className="w-5 h-5 text-white" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.filter(s => s.is_offering).length}</p>
-                    <p className="text-xs md:text-sm text-gray-600">Skills Teaching</p>
+                    <p className="text-xl md:text-2xl font-bold text-white">{skills.filter(s => s.is_offering).length}</p>
+                    <p className="text-xs md:text-sm text-white/70">Skills Teaching</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            <Card className="glass-card">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-blue-600" />
+                  <Users className="w-5 h-5 text-white" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.filter(s => s.is_learning).length}</p>
-                    <p className="text-xs md:text-sm text-gray-600">Skills Learning</p>
+                    <p className="text-xl md:text-2xl font-bold text-white">{skills.filter(s => s.is_learning).length}</p>
+                    <p className="text-xs md:text-sm text-white/70">Skills Learning</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            <Card className="glass-card">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
-                  <Star className="w-5 h-5 text-yellow-600" />
+                  <Star className="w-5 h-5 text-white" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold text-gray-900">{skills.length}</p>
-                    <p className="text-xs md:text-sm text-gray-600">Total Skills</p>
+                    <p className="text-xl md:text-2xl font-bold text-white">{skills.length}</p>
+                    <p className="text-xs md:text-sm text-white/70">Total Skills</p>
                   </div>
                 </div>
               </CardContent>
@@ -688,7 +688,7 @@ export default function Profile() {
           {/* Skills Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Teaching Skills */}
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            <Card className="glass-card">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -771,7 +771,7 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="text-center py-6 md:py-8">
-                    <p className="text-gray-500 mb-4 text-sm">No teaching skills yet</p>
+                    <p className="text-white/60 mb-4 text-sm">No teaching skills yet</p>
                     {!editingSkills && (
                       <Button size="sm" onClick={() => setEditingSkills(true)} className="touch-target">
                         <Plus className="w-4 h-4 mr-2" />
@@ -784,7 +784,7 @@ export default function Profile() {
             </Card>
 
             {/* Learning Skills */}
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            <Card className="glass-card">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -867,7 +867,7 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="text-center py-6 md:py-8">
-                    <p className="text-gray-500 mb-4 text-sm">No learning skills yet</p>
+                    <p className="text-white/60 mb-4 text-sm">No learning skills yet</p>
                     {!editingSkills && (
                       <Button size="sm" onClick={() => setEditingSkills(true)} className="touch-target">
                         <Plus className="w-4 h-4 mr-2" />

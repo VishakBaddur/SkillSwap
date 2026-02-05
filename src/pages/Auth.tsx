@@ -165,33 +165,33 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
       <motion.div 
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* Logo and Title */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center mx-auto mb-4 border border-white/20">
             <BookOpen className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h1 className="text-2xl font-semibold text-white mb-2">
             Welcome to SkillSwap
           </h1>
-          <p className="text-gray-600">
+          <p className="text-white/70">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </p>
         </div>
 
         {/* Auth Card */}
-        <Card className="border border-gray-200 shadow-sm">
+        <Card className="glass-card">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl text-gray-900">
+            <CardTitle className="text-xl text-white">
               {isLogin ? 'Sign In' : 'Sign Up'}
             </CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardDescription className="text-white/70">
               {isLogin 
                 ? 'Access your skill exchange dashboard' 
                 : 'Start your skill trading journey'
@@ -201,7 +201,7 @@ export default function Auth() {
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
+                <Label htmlFor="email" className="text-white/90 text-sm font-medium">
                   Email Address
                 </Label>
                 <Input
@@ -211,12 +211,12 @@ export default function Auth() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                  className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-white/40 focus:ring-white/20"
                 />
               </div>
 
               <div>
-                <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
+                <Label htmlFor="password" className="text-white/90 text-sm font-medium">
                   Password
                 </Label>
                 <div className="relative mt-2">
@@ -227,12 +227,12 @@ export default function Auth() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pr-12 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                    className="pr-12 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-white/40 focus:ring-white/20"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -244,7 +244,7 @@ export default function Auth() {
                   <button
                     type="button"
                     onClick={() => setShowForgotPassword(true)}
-                    className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors"
                   >
                     Forgot password?
                   </button>
@@ -254,7 +254,7 @@ export default function Auth() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full bg-white text-black hover:bg-white/90"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -266,13 +266,13 @@ export default function Auth() {
             </form>
 
             {/* Toggle Auth Mode */}
-            <div className="text-center pt-4 border-t border-gray-200">
-              <p className="text-gray-600 text-sm">
+            <div className="text-center pt-4 border-t border-white/10">
+              <p className="text-white/70 text-sm">
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
                 <button
                   type="button"
                   onClick={() => setIsLogin(!isLogin)}
-                  className="text-gray-900 hover:text-gray-700 font-medium transition-colors"
+                  className="text-white hover:text-white/80 font-medium transition-colors"
                 >
                   {isLogin ? 'Sign up' : 'Sign in'}
                 </button>
@@ -282,7 +282,7 @@ export default function Auth() {
             {/* Back to Home */}
             <div className="text-center">
               <Link to="/">
-                <button className="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                <button className="text-white/60 hover:text-white transition-colors text-sm">
                   ← Back to Home
                 </button>
               </Link>
@@ -295,19 +295,19 @@ export default function Auth() {
       <AnimatePresence>
         {showForgotPassword && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-xl p-6 max-w-md w-full border border-gray-200 shadow-lg"
+              className="glass-card rounded-xl p-6 max-w-md w-full border border-white/20"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Reset Password</h3>
-              <p className="text-gray-600 mb-6 text-sm">
+              <h3 className="text-lg font-semibold text-white mb-4">Reset Password</h3>
+              <p className="text-white/70 mb-6 text-sm">
                 Enter your email address and we'll send you a link to reset your password.
               </p>
               <div className="space-y-4">
@@ -316,13 +316,13 @@ export default function Auth() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
                 />
                 <div className="flex gap-3">
                   <Button
                     onClick={handleForgotPassword}
                     disabled={loading}
-                    className="flex-1 bg-black text-white hover:bg-gray-800"
+                    className="flex-1 bg-white text-black hover:bg-white/90"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Send Reset Link
@@ -330,7 +330,7 @@ export default function Auth() {
                   <Button
                     variant="outline"
                     onClick={() => setShowForgotPassword(false)}
-                    className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    className="border-white/20 text-white hover:bg-white/10"
                   >
                     Cancel
                   </Button>
@@ -345,40 +345,40 @@ export default function Auth() {
       <AnimatePresence>
         {showResetPassword && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-xl p-6 max-w-md w-full border border-gray-200 shadow-lg"
+              className="glass-card rounded-xl p-6 max-w-md w-full border border-white/20"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Set a New Password</h3>
-              <p className="text-gray-600 mb-6 text-sm">Enter and confirm your new password.</p>
+              <h3 className="text-lg font-semibold text-white mb-4">Set a New Password</h3>
+              <p className="text-white/70 mb-6 text-sm">Enter and confirm your new password.</p>
               <div className="space-y-4">
                 <Input
                   type="password"
                   placeholder="New password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
                 />
                 <Input
                   type="password"
                   placeholder="Confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
                 />
                 <div className="flex gap-3">
-                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-black text-white hover:bg-gray-800">
+                  <Button onClick={handleResetPassword} disabled={loading} className="flex-1 bg-white text-black hover:bg-white/90">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Update Password
                   </Button>
-                  <Button variant="outline" onClick={() => setShowResetPassword(false)} className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                  <Button variant="outline" onClick={() => setShowResetPassword(false)} className="border-white/20 text-white hover:bg-white/10">
                     Cancel
                   </Button>
                 </div>

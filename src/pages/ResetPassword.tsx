@@ -108,30 +108,30 @@ export default function ResetPassword() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
         <motion.div
-          className="w-full max-w-md"
+          className="w-full max-w-md relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="border border-gray-200 shadow-sm bg-white">
+          <Card className="glass-card">
             <CardContent className="p-8 text-center">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30"
               >
                 <CheckCircle className="w-8 h-8 text-white" />
               </motion.div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Password Updated!</h2>
-              <p className="text-gray-600 mb-6">
+              <h2 className="text-2xl font-bold text-white mb-4">Password Updated!</h2>
+              <p className="text-white/70 mb-6">
                 Your password has been successfully updated. You can now sign in with your new password.
               </p>
               <Button
                 onClick={() => navigate('/auth')}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full bg-white text-black hover:bg-white/90"
               >
                 Sign In
               </Button>
@@ -143,35 +143,35 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
       <motion.div
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center mx-auto mb-4 border border-white/20">
             <BookOpen className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-white">
             Reset Password
           </h1>
         </div>
 
         {/* Reset Form */}
-        <Card className="border border-gray-200 shadow-sm bg-white">
+        <Card className="glass-card">
           <CardHeader className="text-center">
-            <CardTitle className="text-xl text-gray-900">Set New Password</CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardTitle className="text-xl text-white">Set New Password</CardTitle>
+            <CardDescription className="text-white/70">
               Enter your new password below
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleResetPassword} className="space-y-4">
               <div>
-                <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
+                <Label htmlFor="password" className="text-white/90 text-sm font-medium">
                   New Password
                 </Label>
                 <Input
@@ -181,12 +181,12 @@ export default function ResetPassword() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                  className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-white/40 focus:ring-white/20"
                 />
               </div>
 
               <div>
-                <Label htmlFor="confirmPassword" className="text-gray-700 text-sm font-medium">
+                <Label htmlFor="confirmPassword" className="text-white/90 text-sm font-medium">
                   Confirm Password
                 </Label>
                 <Input
@@ -196,14 +196,14 @@ export default function ResetPassword() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="mt-2 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                  className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-white/40 focus:ring-white/20"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full bg-white text-black hover:bg-white/90"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -216,7 +216,7 @@ export default function ResetPassword() {
               <Button
                 variant="ghost"
                 onClick={() => navigate('/auth')}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-white/70 hover:text-white"
               >
                 ← Back to Sign In
               </Button>

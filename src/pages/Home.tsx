@@ -155,17 +155,17 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen overflow-hidden relative">
       {/* Header Section */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-black/50 backdrop-blur-sm border-b border-white/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           {/* Top Navigation */}
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-white">
                 SkillSwap
               </span>
             </div>
@@ -174,7 +174,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="border-white/20 text-white hover:bg-white/10"
                 >
                   <User className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Profile</span>
@@ -184,7 +184,7 @@ export default function Home() {
                 variant="outline" 
                 size="sm"
                 onClick={() => supabase.auth.signOut()}
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="border-white/20 text-white hover:bg-white/10"
               >
                 <span className="hidden sm:inline">Sign Out</span>
                 <span className="sm:hidden">Out</span>
@@ -193,10 +193,10 @@ export default function Home() {
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-gray-900">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-white">
               SkillSwap Dashboard
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">
               Discover amazing people and start trading skills today
             </p>
           </div>
@@ -204,13 +204,13 @@ export default function Home() {
           {/* Search and Filter */}
           <div className="max-w-4xl mx-auto space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search for skills, people, or interests..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900 focus:outline-none"
+                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-white/40 focus:border-white/40 focus:ring-white/20 focus:outline-none backdrop-blur-sm"
               />
             </div>
             
@@ -221,8 +221,8 @@ export default function Home() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedCategory === category
-                      ? 'bg-black text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                      ? 'bg-white text-black'
+                      : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm'
                   }`}
                 >
                   {category === 'all' ? 'All Categories' : category}
@@ -235,21 +235,21 @@ export default function Home() {
 
       {/* Stats Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-gray-50 rounded-xl p-8 border border-gray-200">
+        <div className="glass-card rounded-xl p-8">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             {[
-              { icon: Users, number: users.length, label: "Available Users", color: "text-gray-900" },
-              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "text-gray-900" },
-              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "text-gray-900" }
+              { icon: Users, number: users.length, label: "Available Users", color: "text-white" },
+              { icon: Star, number: users.flatMap(u => u.skills).length, label: "Skills Available", color: "text-white" },
+              { icon: TrendingUp, number: Math.floor(users.length * 0.8), label: "Active Exchanges", color: "text-white" }
             ].map((stat, index) => (
               <div key={index}>
-                <div className={`w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                <div className={`w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mx-auto mb-4 border border-white/20`}>
                   <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
-                <div className="text-3xl font-bold mb-2 text-gray-900">
+                <div className="text-3xl font-bold mb-2 text-white">
                   {stat.number}
                 </div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-white/70">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -278,18 +278,18 @@ export default function Home() {
                     transition: { type: "spring", stiffness: 300, damping: 20 }
                   }}
                 >
-                  <Card className="border border-gray-200 shadow-sm bg-white h-full hover:shadow-md transition-shadow">
+                  <Card className="glass-card h-full hover:bg-white/10 transition-all">
                     <CardHeader className="text-center pb-4">
                       <div className="w-20 h-20 mx-auto mb-4">
-                        <Avatar className="w-20 h-20 border-2 border-gray-200">
+                        <Avatar className="w-20 h-20 border-2 border-white/20">
                           <AvatarImage src={user.profile_picture} />
-                          <AvatarFallback className="bg-gray-100 text-gray-900 text-xl font-semibold">
+                          <AvatarFallback className="bg-white/10 text-white text-xl font-semibold">
                             {user.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                       </div>
-                      <CardTitle className="text-xl text-gray-900 mb-2">{user.name}</CardTitle>
-                      <CardDescription className="text-gray-600 text-sm leading-relaxed">
+                      <CardTitle className="text-xl text-white mb-2">{user.name}</CardTitle>
+                      <CardDescription className="text-white/70 text-sm leading-relaxed">
                         {user.bio || 'No bio available'}
                       </CardDescription>
                     </CardHeader>
@@ -297,7 +297,7 @@ export default function Home() {
                     <CardContent className="space-y-4">
                       {/* Skills */}
                       <div className="space-y-3">
-                        <h4 className="text-sm font-semibold text-gray-900">Skills</h4>
+                        <h4 className="text-sm font-semibold text-white">Skills</h4>
                         <div className="flex flex-wrap gap-2">
                           {user.skills.slice(0, 3).map((skill) => (
                             <Badge
@@ -305,15 +305,15 @@ export default function Home() {
                               variant="secondary"
                               className={`text-xs ${
                                 skill.is_offering
-                                  ? 'bg-green-50 text-green-700 border-green-200'
-                                  : 'bg-blue-50 text-blue-700 border-blue-200'
+                                  ? 'bg-white/20 text-white border-white/30'
+                                  : 'bg-white/10 text-white/80 border-white/20'
                               }`}
                             >
                               {skill.name}
                             </Badge>
                           ))}
                           {user.skills.length > 3 && (
-                            <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
+                            <Badge variant="secondary" className="text-xs bg-white/10 text-white/60 border-white/20">
                               +{user.skills.length - 3} more
                             </Badge>
                           )}
@@ -324,7 +324,7 @@ export default function Home() {
                       <div className="flex gap-2 pt-2">
                         <Button
                           size="sm"
-                          className="flex-1 bg-black text-white hover:bg-gray-800"
+                          className="flex-1 bg-white text-black hover:bg-white/90"
                           onClick={() => handleMessageUser(user)}
                         >
                           <MessageCircle className="w-4 h-4 mr-2" />
@@ -333,7 +333,7 @@ export default function Home() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                          className="border-white/20 text-white hover:bg-white/10"
                           onClick={() => handleSkillExchange(user)}
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -349,11 +349,11 @@ export default function Home() {
 
         {!loading && filteredUsers.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-12 h-12 text-gray-400" />
+            <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20">
+              <Search className="w-12 h-12 text-white/60" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No matches found</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
+            <p className="text-white/70 mb-6">
               Try adjusting your search terms or category filters
             </p>
             <Button
@@ -361,7 +361,7 @@ export default function Home() {
                 setSearchTerm('');
                 setSelectedCategory('all');
               }}
-              className="bg-black text-white hover:bg-gray-800"
+              className="bg-white text-black hover:bg-white/90"
             >
               Clear Filters
             </Button>
@@ -376,7 +376,7 @@ export default function Home() {
       <AnimatePresence>
         {showChat && selectedUser && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -402,7 +402,7 @@ export default function Home() {
       <AnimatePresence>
         {showSkillExchange && selectedUser && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

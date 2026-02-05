@@ -202,20 +202,20 @@ export default function ProfileSetup() {
   const progress = (step / totalSteps) * 100;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black/50 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-white">
                 SkillSwap
               </span>
             </Link>
-            <div className="text-sm md:text-base text-gray-600">
+            <div className="text-sm md:text-base text-white/70">
               Step {step} of {totalSteps}
             </div>
           </div>
@@ -227,26 +227,26 @@ export default function ProfileSetup() {
           {/* Progress Bar */}
           <div className="mb-6 md:mb-8">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm md:text-base font-medium text-gray-700">Setup Progress</span>
-              <span className="text-sm md:text-base text-gray-500">{Math.round(progress)}%</span>
+              <span className="text-sm md:text-base font-medium text-white/90">Setup Progress</span>
+              <span className="text-sm md:text-base text-white/70">{Math.round(progress)}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
+            <div className="w-full bg-white/10 rounded-full h-2 md:h-3">
               <div 
-                className="bg-gradient-to-r from-gray-500 to-gray-700 h-2 md:h-3 rounded-full transition-all duration-300 ease-in-out"
+                className="bg-white h-2 md:h-3 rounded-full transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
           </div>
 
           {/* Step Content */}
-          <Card className="bg-white border border-gray-200 shadow-sm">
+          <Card className="glass-card">
             <CardHeader className="text-center pb-6">
-              <CardTitle className="text-xl md:text-2xl font-bold">
+              <CardTitle className="text-xl md:text-2xl font-bold text-white">
                 {step === 1 && 'Basic Information'}
                 {step === 2 && 'Skills You Can Teach'}
                 {step === 3 && 'Skills You Want to Learn'}
               </CardTitle>
-              <CardDescription className="text-sm md:text-base">
+              <CardDescription className="text-sm md:text-base text-white/70">
                 {step === 1 && 'Tell us about yourself to get started'}
                 {step === 2 && 'What skills can you offer to others?'}
                 {step === 3 && 'What skills would you like to learn from others?'}
@@ -256,44 +256,44 @@ export default function ProfileSetup() {
               {step === 1 && (
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name" className="text-sm md:text-base">Full Name</Label>
+                    <Label htmlFor="name" className="text-sm md:text-base text-white/90">Full Name</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                       placeholder="Enter your full name"
-                      className="text-sm md:text-base"
+                      className="text-sm md:text-base bg-white/10 border-white/20 text-white placeholder:text-white/40"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="bio" className="text-sm md:text-base">Bio</Label>
+                    <Label htmlFor="bio" className="text-sm md:text-base text-white/90">Bio</Label>
                     <Textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
                       placeholder="Tell us about yourself..."
                       rows={3}
-                      className="text-sm md:text-base"
+                      className="text-sm md:text-base bg-white/10 border-white/20 text-white placeholder:text-white/40"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-sm md:text-base">Phone (optional)</Label>
+                    <Label htmlFor="phone" className="text-sm md:text-base text-white/90">Phone (optional)</Label>
                     <Input
                       id="phone"
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="+1234567890"
-                      className="text-sm md:text-base"
+                      className="text-sm md:text-base bg-white/10 border-white/20 text-white placeholder:text-white/40"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="location" className="text-sm md:text-base">Location (optional)</Label>
+                    <Label htmlFor="location" className="text-sm md:text-base text-white/90">Location (optional)</Label>
                     <Input
                       id="location"
                       value={formData.location}
                       onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                       placeholder="City, Country"
-                      className="text-sm md:text-base"
+                      className="text-sm md:text-base bg-white/10 border-white/20 text-white placeholder:text-white/40"
                     />
                   </div>
                 </div>
@@ -449,35 +449,35 @@ export default function ProfileSetup() {
           {/* Stats Preview */}
           {(step === 2 || step === 3) && (
             <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="glass-card">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                    <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-white" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold text-gray-900">{teachingSkills.length}</p>
-                      <p className="text-xs md:text-sm text-gray-600">Teaching Skills</p>
+                      <p className="text-lg md:text-2xl font-bold text-white">{teachingSkills.length}</p>
+                      <p className="text-xs md:text-sm text-white/70">Teaching Skills</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="glass-card">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <Users className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                    <Users className="w-4 h-4 md:w-5 md:h-5 text-white" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold text-gray-900">{learningSkills.length}</p>
-                      <p className="text-xs md:text-sm text-gray-600">Learning Skills</p>
+                      <p className="text-lg md:text-2xl font-bold text-white">{learningSkills.length}</p>
+                      <p className="text-xs md:text-sm text-white/70">Learning Skills</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="glass-card">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
+                    <Star className="w-4 h-4 md:w-5 md:h-5 text-white" />
                     <div>
-                      <p className="text-lg md:text-2xl font-bold text-gray-900">{teachingSkills.length + learningSkills.length}</p>
-                      <p className="text-xs md:text-sm text-gray-600">Total Skills</p>
+                      <p className="text-lg md:text-2xl font-bold text-white">{teachingSkills.length + learningSkills.length}</p>
+                      <p className="text-xs md:text-sm text-white/70">Total Skills</p>
                     </div>
                   </div>
                 </CardContent>

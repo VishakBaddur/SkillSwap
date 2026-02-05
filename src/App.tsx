@@ -91,13 +91,13 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center overflow-hidden">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center mx-auto mb-6">
+      <div className="min-h-screen flex items-center justify-center overflow-hidden relative">
+        <div className="text-center relative z-10">
+          <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center mx-auto mb-6 border border-white/20">
             <BookOpen className="w-8 h-8 text-white" />
           </div>
-          <div className="h-4 w-32 bg-gray-200 rounded-full animate-pulse mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading SkillSwap...</p>
+          <div className="h-4 w-32 bg-white/20 rounded-full animate-pulse mx-auto mb-4"></div>
+          <p className="text-white/70 text-lg">Loading SkillSwap...</p>
         </div>
       </div>
     );

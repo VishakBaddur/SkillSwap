@@ -36,10 +36,10 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen overflow-hidden relative">
       {/* Navigation */}
       <motion.nav 
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center relative z-10 border-b border-gray-100"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center relative z-10 border-b border-white/10"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -49,21 +49,21 @@ export default function Index() {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
             <BookOpen className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-semibold text-gray-900">
+          <span className="text-xl font-semibold text-white">
             SkillSwap
           </span>
         </motion.div>
         <div className="flex items-center space-x-3">
           <Link to="/auth">
-            <Button variant="ghost" className="text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 border-white/20">
               Sign In
             </Button>
           </Link>
           <Link to="/auth">
-            <Button className="bg-black text-white hover:bg-gray-800">
+            <Button className="bg-white text-black hover:bg-white/90">
               Get Started
             </Button>
           </Link>
@@ -73,28 +73,28 @@ export default function Index() {
       {/* Hero Section */}
       <motion.section 
         ref={heroRef}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 text-center relative z-10"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 text-center relative z-10 min-h-[80vh] flex items-center"
         variants={containerVariants}
         initial="hidden"
         animate={heroInView ? "visible" : "hidden"}
       >
         <div className="max-w-4xl mx-auto">
           <motion.div variants={itemVariants}>
-            <Badge variant="secondary" className="mb-6 bg-gray-100 text-gray-700 border-gray-200">
+            <Badge variant="secondary" className="mb-6 bg-white/10 text-white border-white/20 backdrop-blur-sm">
               <Sparkles className="w-3 h-3 mr-2" />
               Now Available on App Store & Google Play
             </Badge>
           </motion.div>
           
           <motion.h1 
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 leading-tight"
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight"
             variants={itemVariants}
           >
             Trade Skills, Not Money
           </motion.h1>
           
           <motion.p 
-            className="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
             Connect with people who can teach you what you want to learn, and share your expertise in return. 
@@ -106,12 +106,12 @@ export default function Index() {
             variants={itemVariants}
           >
             <Link to="/auth">
-              <Button size="lg" className="text-base px-8 py-6 bg-black text-white hover:bg-gray-800">
+              <Button size="lg" className="text-base px-8 py-6 bg-white text-black hover:bg-white/90">
                 Start Trading Skills
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="text-base px-8 py-6 border-gray-300 text-gray-700 hover:bg-gray-50">
+            <Button variant="outline" size="lg" className="text-base px-8 py-6 border-white/30 text-white hover:bg-white/10">
               Watch Demo
             </Button>
           </motion.div>
@@ -121,16 +121,16 @@ export default function Index() {
       {/* Features Section */}
       <motion.section 
         ref={featuresRef}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 relative z-10 bg-gray-50"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate={featuresInView ? "visible" : "hidden"}
       >
         <motion.div className="text-center mb-16" variants={itemVariants}>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-gray-900">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
             How It Works
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-white/70 max-w-2xl mx-auto">
             SkillSwap makes it easy to find the perfect skill exchange partner
           </p>
         </motion.div>
@@ -164,18 +164,18 @@ export default function Index() {
                 transition: { type: "spring", stiffness: 300, damping: 20 }
               }}
             >
-              <Card className="border border-gray-200 shadow-sm bg-white h-full hover:shadow-md transition-shadow">
+              <Card className="glass-card h-full hover:bg-white/10 transition-all">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                    <feature.icon className="w-6 h-6 text-gray-900" />
+                  <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4 border border-white/20">
+                    <feature.icon className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="text-xl text-gray-900 mb-2">{feature.title}</CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardTitle className="text-xl text-white mb-2">{feature.title}</CardTitle>
+                  <CardDescription className="text-white/70">
                     {feature.description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 leading-relaxed text-sm">
+                  <p className="text-white/60 leading-relaxed text-sm">
                     {feature.content}
                   </p>
                 </CardContent>
@@ -194,10 +194,10 @@ export default function Index() {
         animate={statsInView ? "visible" : "hidden"}
       >
         <motion.div 
-          className="bg-white rounded-2xl p-12 sm:p-16 text-center border border-gray-200 shadow-sm"
+          className="glass-card rounded-2xl p-12 sm:p-16 text-center"
           variants={itemVariants}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-900">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-white">
             Join Our Growing Community
           </h2>
           <div className="grid md:grid-cols-3 gap-8 sm:gap-12">
@@ -212,10 +212,10 @@ export default function Index() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="text-5xl sm:text-6xl font-bold mb-3 text-gray-900">
+                <div className="text-5xl sm:text-6xl font-bold mb-3 text-white">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 text-lg">{stat.label}</div>
+                <div className="text-white/70 text-lg">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -225,27 +225,27 @@ export default function Index() {
       {/* CTA Section */}
       <motion.section 
         ref={ctaRef}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 text-center relative z-10 bg-gray-50"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 text-center relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate={ctaInView ? "visible" : "hidden"}
       >
         <div className="max-w-3xl mx-auto">
           <motion.h2 
-            className="text-4xl sm:text-5xl font-bold mb-6 text-gray-900"
+            className="text-4xl sm:text-5xl font-bold mb-6 text-white"
             variants={itemVariants}
           >
             Ready to Start Your Skill Journey?
           </motion.h2>
           <motion.p 
-            className="text-lg text-gray-600 mb-10 leading-relaxed"
+            className="text-lg text-white/70 mb-10 leading-relaxed"
             variants={itemVariants}
           >
             Join thousands of learners and teachers who are already trading skills on SkillSwap
           </motion.p>
           <motion.div variants={itemVariants}>
             <Link to="/auth">
-              <Button size="lg" className="text-base px-10 py-6 bg-black text-white hover:bg-gray-800">
+              <Button size="lg" className="text-base px-10 py-6 bg-white text-black hover:bg-white/90">
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -256,7 +256,7 @@ export default function Index() {
 
       {/* Footer */}
       <motion.footer 
-        className="bg-white border-t border-gray-200 relative z-10"
+        className="border-t border-white/10 relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -265,12 +265,12 @@ export default function Index() {
           <div className="grid md:grid-cols-4 gap-8 sm:gap-12">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
                   <BookOpen className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-gray-900">SkillSwap</span>
+                <span className="text-lg font-semibold text-white">SkillSwap</span>
               </div>
-              <p className="text-gray-600 leading-relaxed text-sm">
+              <p className="text-white/60 leading-relaxed text-sm">
                 The platform for meaningful skill exchanges and community learning.
               </p>
             </div>
@@ -280,12 +280,12 @@ export default function Index() {
               { title: "Support", items: ["Help Center", "Privacy Policy", "Terms of Service", "Community Guidelines"] }
             ].map((section, index) => (
               <div key={index}>
-                <h3 className="font-semibold mb-4 text-gray-900 text-sm">{section.title}</h3>
+                <h3 className="font-semibold mb-4 text-white text-sm">{section.title}</h3>
                 <ul className="space-y-2">
                   {section.items.map((item, itemIndex) => (
                     <li 
                       key={itemIndex}
-                      className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors text-sm"
+                      className="text-white/60 hover:text-white cursor-pointer transition-colors text-sm"
                     >
                       {item}
                     </li>
@@ -294,7 +294,7 @@ export default function Index() {
               </div>
             ))}
           </div>
-          <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-600 text-sm">
+          <div className="border-t border-white/10 mt-12 pt-8 text-center text-white/60 text-sm">
             <p>&copy; 2024 SkillSwap. All rights reserved.</p>
           </div>
         </div>
