@@ -63,7 +63,7 @@ export default function Index() {
             </Button>
           </Link>
           <Link to="/auth">
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="!bg-white !text-black hover:!bg-white/90 font-medium">
               Get Started
             </Button>
           </Link>
@@ -106,12 +106,12 @@ export default function Index() {
             variants={itemVariants}
           >
             <Link to="/auth">
-              <Button size="lg" className="text-base px-8 py-6 bg-white text-black hover:bg-white/90">
+              <Button size="lg" className="text-base px-8 py-6 !bg-white !text-black hover:!bg-white/90">
                 Start Trading Skills
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="text-base px-8 py-6 border-white/30 text-white hover:bg-white/10">
+            <Button variant="outline" size="lg" className="text-base px-8 py-6 !border-white/30 !text-white hover:!bg-white/10 bg-transparent">
               Watch Demo
             </Button>
           </motion.div>
@@ -245,7 +245,7 @@ export default function Index() {
           </motion.p>
           <motion.div variants={itemVariants}>
             <Link to="/auth">
-              <Button size="lg" className="text-base px-10 py-6 bg-white text-black hover:bg-white/90">
+              <Button size="lg" className="text-base px-10 py-6 !bg-white !text-black hover:!bg-white/90">
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
