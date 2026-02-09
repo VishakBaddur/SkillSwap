@@ -158,6 +158,7 @@ DROP POLICY IF EXISTS "Users can view ratings for them" ON public.user_ratings;
 DROP POLICY IF EXISTS "Users can create ratings" ON public.user_ratings;
 
 -- Users policies
+CREATE POLICY "Users can view all profiles" ON public.users FOR SELECT USING (true);
 CREATE POLICY "Users can view their own profile" ON public.users FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update their own profile" ON public.users FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Users can insert their own profile" ON public.users FOR INSERT WITH CHECK (auth.uid() = id);
@@ -168,6 +169,7 @@ CREATE POLICY "Users can insert skills" ON public.skills FOR INSERT WITH CHECK (
 CREATE POLICY "Users can update skills" ON public.skills FOR UPDATE USING (true);
 
 -- User skills policies
+CREATE POLICY "Users can view all user skills" ON public.user_skills FOR SELECT USING (true);
 CREATE POLICY "Users can view their own skills" ON public.user_skills FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage their own skills" ON public.user_skills FOR ALL USING (auth.uid() = user_id);
 

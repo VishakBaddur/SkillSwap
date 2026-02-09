@@ -351,13 +351,30 @@ export default function Home() {
           </AnimatePresence>
         )}
 
-        {!loading && filteredUsers.length === 0 && (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20">
+        {!loading && filteredUsers.length === 0 && users.length === 0 && (
+          <div className="text-center py-16 relative z-10">
+            <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20 backdrop-blur-sm">
+              <Users className="w-12 h-12 text-white/60" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">No users found</h3>
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
+              Be the first to join! Complete your profile setup to start connecting with others.
+            </p>
+            <Link to="/profile-setup">
+              <Button className="bg-white text-black hover:bg-white/90">
+                Complete Profile Setup
+              </Button>
+            </Link>
+          </div>
+        )}
+        
+        {!loading && filteredUsers.length === 0 && users.length > 0 && (
+          <div className="text-center py-16 relative z-10">
+            <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20 backdrop-blur-sm">
               <Search className="w-12 h-12 text-white/60" />
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">No matches found</h3>
-            <p className="text-white/70 mb-6">
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
               Try adjusting your search terms or category filters
             </p>
             <Button
