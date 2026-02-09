@@ -11,6 +11,7 @@ import { SkillExchangeRequest } from '@/components/ui/skill-exchange';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 import { 
   BookOpen, 
   Search, 
@@ -156,6 +157,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
       {/* Header Section */}
       <header className="bg-black/50 backdrop-blur-sm border-b border-white/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">

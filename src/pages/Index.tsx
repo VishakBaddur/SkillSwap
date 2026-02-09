@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Users, BookOpen, MessageCircle, Star, Sparkles, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 export default function Index() {
   const [heroRef, heroInView] = useInView({ threshold: 0.3, triggerOnce: true });
@@ -37,6 +38,9 @@ export default function Index() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
       {/* Navigation */}
       <motion.nav 
         className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center relative z-10 border-b border-white/10"

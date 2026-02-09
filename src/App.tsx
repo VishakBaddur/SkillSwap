@@ -12,6 +12,7 @@ import Profile from '@/pages/Profile';
 import ProfileSetup from '@/pages/ProfileSetup';
 import NotFound from '@/pages/NotFound';
 import { Matches } from '@/components/ui/matches';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
 function App() {
   const [session, setSession] = useState<any>(null);
@@ -105,6 +106,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <AnimatedBackground />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={(!session || isRecovery) ? <Auth /> : <Navigate to="/home" />} />
