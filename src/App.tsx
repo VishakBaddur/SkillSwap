@@ -55,6 +55,12 @@ function App() {
           window.location.replace('/auth');
         }
       }
+      if (event === 'SIGNED_IN' && session) {
+        // Clear URL hash after successful sign in (email verification)
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+      }
     });
 
     return () => subscription.unsubscribe();
