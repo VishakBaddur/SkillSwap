@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 
 // Get Supabase credentials from environment variables
 // Fallback values for development (should be set via environment variables in production)
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://zeysyrbxiifrxgwxxdgi.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpleXN5cmJ4aWlmcnhnd3h4ZGdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NTY1NDcsImV4cCI6MjA2NzAzMjU0N30.D1iZ_q5CWob8Ne3m9Gx8Ktc3KfdwV06xoUTd7jBg5wQ';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://tiiowisxzqonzkddtkyp.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_46XSUGsQ8UU2UruSwqmA4A_jqMiEikx';
 
 // Validate that we have the required values
 if (!supabaseUrl || !supabaseAnonKey) {
