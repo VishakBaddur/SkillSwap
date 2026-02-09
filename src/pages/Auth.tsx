@@ -67,18 +67,31 @@ export default function Auth() {
         });
         navigate('/home');
       } else {
-        const { error } = await supabase.auth.signUp({
+        // Check Supabase connection before signup
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        if (!supabaseUrl) {
+          throw new Error('Supabase URL is not configured. Please check your environment variables.');
+        }
+
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Signup error:', error);
+          throw error;
+        }
 
-        toast({
-          title: "Success",
-          description: "Account created! Please check your email to verify your account.",
-        });
-        setIsLogin(true);
+        if (data?.user) {
+          toast({
+            title: "Success",
+            description: "Account created! Please check your email to verify your account.",
+          });
+          setIsLogin(true);
+        } else {
+          throw new Error('Failed to create account. Please try again.');
+        }
       }
     } catch (error: any) {
       toast({
