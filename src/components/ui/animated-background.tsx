@@ -112,8 +112,8 @@ function FloatingIcon({ Icon, index, mouseX, mouseY }: FloatingIconProps) {
   ) * (180 / Math.PI);
 
   // Size and opacity vary per icon for visual interest
-  const size = 28 + (index % 4) * 6;
-  const opacity = 0.12 + (index % 5) * 0.04;
+  const size = 32 + (index % 4) * 8;
+  const opacity = 0.25 + (index % 5) * 0.08;
 
   return (
     <motion.div
@@ -125,7 +125,7 @@ function FloatingIcon({ Icon, index, mouseX, mouseY }: FloatingIconProps) {
       className="absolute pointer-events-none"
       initial={{ opacity: 0, scale: 0 }}
       animate={{
-        opacity,
+        opacity: opacity * 1.2, // Boost opacity slightly
         scale: 1,
       }}
       transition={{
@@ -133,14 +133,18 @@ function FloatingIcon({ Icon, index, mouseX, mouseY }: FloatingIconProps) {
         delay: index * 0.08,
         ease: "easeOut",
       }}
+      whileHover={{
+        opacity: opacity * 1.5,
+        scale: 1.1,
+      }}
     >
       <div
         style={{
           width: size,
           height: size,
-          filter: 'drop-shadow(0 0 10px rgba(72, 240, 184, 0.2))',
+          filter: 'drop-shadow(0 0 12px rgba(72, 240, 184, 0.4)) drop-shadow(0 0 6px rgba(59, 242, 245, 0.3))',
         }}
-        className="text-white/20 transition-opacity duration-300"
+        className="text-white/40 transition-opacity duration-300"
       >
         <Icon className="w-full h-full" />
       </div>
