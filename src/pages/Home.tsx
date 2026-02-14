@@ -178,7 +178,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="!border-white/20 !text-white hover:!bg-white/10 bg-transparent"
                 >
                   <User className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Profile</span>
@@ -188,7 +188,7 @@ export default function Home() {
                 variant="outline" 
                 size="sm"
                 onClick={() => supabase.auth.signOut()}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="!border-white/20 !text-white hover:!bg-white/10 bg-transparent"
               >
                 <span className="hidden sm:inline">Sign Out</span>
                 <span className="sm:hidden">Out</span>
