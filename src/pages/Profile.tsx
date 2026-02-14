@@ -121,13 +121,29 @@ export default function Profile() {
       if (!authUser) return;
 
       // Fetch user profile
-      const { data: userData, error: userError } = await supabase
+      let { data: userData, error: userError } = await supabase
         .from('users')
         .select('*')
         .eq('id', authUser.id)
         .single();
 
-      if (userError) throw userError;
+      // If user doesn't exist in public.users, create it
+      if (userError && userError.code === 'PGRST116') {
+        const { data: newUser, error: insertError } = await supabase
+          .from('users')
+          .insert({
+            id: authUser.id,
+            email: authUser.email || '',
+            name: authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'User',
+          })
+          .select()
+          .single();
+        
+        if (insertError) throw insertError;
+        userData = newUser;
+      } else if (userError) {
+        throw userError;
+      }
 
       setUser(userData);
       setEditForm({
