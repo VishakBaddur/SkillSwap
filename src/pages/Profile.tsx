@@ -375,7 +375,7 @@ export default function Profile() {
               </Link>
               <div className="flex items-center space-x-2 md:space-x-4">
                 <Link to="/home">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex !text-white/80 hover:!text-white">Home</Button>
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex !text-white/80 hover:!text-white hover:!bg-white/10">Home</Button>
                 </Link>
                 <Button 
                   variant="outline" 
@@ -459,7 +459,7 @@ export default function Profile() {
             </Link>
             <div className="flex items-center space-x-2 md:space-x-4">
               <Link to="/home">
-                <Button variant="ghost" size="sm" className="hidden sm:inline-flex !text-white/80 hover:!text-white">Home</Button>
+                <Button variant="ghost" size="sm" className="hidden sm:inline-flex !text-white/80 hover:!text-white hover:!bg-white/10">Home</Button>
               </Link>
               <Button 
                 variant="outline" 
