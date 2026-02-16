@@ -727,37 +727,44 @@ export default function Profile() {
                 </div>
               </CardHeader>
               <CardContent>
-                {editingSkills && (
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto smooth-scroll">
-                      {predefinedSkills.map((skill) => (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto smooth-scroll">
+                    {predefinedSkills.map((skill) => {
+                      const isSelected = skills.some(s => s.name === skill.name && s.is_offering);
+                      return (
                         <Badge
                           key={skill.name}
-                          variant={skills.some(s => s.name === skill.name && s.is_offering) ? "default" : "outline"}
-                          className="cursor-pointer hover:bg-green-50 text-xs touch-target"
+                          variant={isSelected ? "default" : "outline"}
+                          className={`cursor-pointer text-xs touch-target transition-all duration-200 ${
+                            isSelected
+                              ? 'bg-white text-black border-white'
+                              : 'bg-transparent border-white/30 text-white hover:border-white/60 hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]'
+                          }`}
                           onClick={() => handleAddSkill(skill.name, true, false)}
                         >
                           {skill.name}
-                          {skills.some(s => s.name === skill.name && s.is_offering) && (
+                          {isSelected && (
                             <Check className="w-3 h-3 ml-1" />
                           )}
                         </Badge>
-                      ))}
-                    </div>
+                      );
+                    })}
+                  </div>
+                  {editingSkills && (
                     <div className="flex gap-2">
                       <Input
                         value={customSkill}
                         onChange={(e) => setCustomSkill(e.target.value)}
                         placeholder="Add a custom skill"
                         onKeyPress={(e) => e.key === 'Enter' && handleAddCustomSkill()}
-                        className="text-sm"
+                        className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/40"
                       />
                       <Button onClick={handleAddCustomSkill} size="sm" className="touch-target">
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
                 
                 {skills.filter(skill => skill.is_offering).length > 0 ? (
                   <div className="space-y-2">
@@ -823,37 +830,44 @@ export default function Profile() {
                 </div>
               </CardHeader>
               <CardContent>
-                {editingSkills && (
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto smooth-scroll">
-                      {predefinedSkills.map((skill) => (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto smooth-scroll">
+                    {predefinedSkills.map((skill) => {
+                      const isSelected = skills.some(s => s.name === skill.name && s.is_learning);
+                      return (
                         <Badge
                           key={skill.name}
-                          variant={skills.some(s => s.name === skill.name && s.is_learning) ? "default" : "outline"}
-                          className="cursor-pointer hover:bg-blue-50 text-xs touch-target"
+                          variant={isSelected ? "default" : "outline"}
+                          className={`cursor-pointer text-xs touch-target transition-all duration-200 ${
+                            isSelected
+                              ? 'bg-white text-black border-white'
+                              : 'bg-transparent border-white/30 text-white hover:border-white/60 hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]'
+                          }`}
                           onClick={() => handleAddSkill(skill.name, false, true)}
                         >
                           {skill.name}
-                          {skills.some(s => s.name === skill.name && s.is_learning) && (
+                          {isSelected && (
                             <Check className="w-3 h-3 ml-1" />
                           )}
                         </Badge>
-                      ))}
-                    </div>
+                      );
+                    })}
+                  </div>
+                  {editingSkills && (
                     <div className="flex gap-2">
                       <Input
                         value={customSkill}
                         onChange={(e) => setCustomSkill(e.target.value)}
                         placeholder="Add a custom skill"
                         onKeyPress={(e) => e.key === 'Enter' && handleAddCustomSkill()}
-                        className="text-sm"
+                        className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/40"
                       />
                       <Button onClick={handleAddCustomSkill} size="sm" className="touch-target">
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
                 
                 {skills.filter(skill => skill.is_learning).length > 0 ? (
                   <div className="space-y-2">
