@@ -4,10 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowLeft, Play, Users, MessageCircle, Video, Star, Sparkles, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AnimatedBackground } from '@/components/ui/animated-background';
-import { useState } from 'react';
-
 export default function Demo() {
-  const [currentStep, setCurrentStep] = useState(0);
 
   const demoSteps = [
     {

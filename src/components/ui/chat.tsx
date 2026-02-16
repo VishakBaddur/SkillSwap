@@ -9,7 +9,7 @@ import { VideoCall } from '@/components/ui/video-call';
 import { supabase } from '@/lib/supabase';
 import { executeQuery, executeMutation } from '@/lib/supabase-client';
 import { useErrorMonitor } from '@/lib/error-monitor';
-import { Send, Phone, Video, MoreVertical, Flag } from 'lucide-react';
+import { Send, Video, MoreVertical, Flag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
@@ -311,7 +311,6 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
       <AnimatePresence>
         {showVideoCall && (
           <VideoCall
-            userId={userId}
             userName={userName}
             userProfilePicture={userProfilePicture}
             onClose={() => setShowVideoCall(false)}

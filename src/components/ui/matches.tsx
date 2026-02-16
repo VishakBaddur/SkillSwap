@@ -493,7 +493,6 @@ export function Matches() {
       <AnimatePresence>
         {showVideoCall && selectedUser && (
           <VideoCall
-            userId={selectedUser.id}
             userName={selectedUser.name}
             userProfilePicture={selectedUser.profile_picture}
             onClose={closeModals}

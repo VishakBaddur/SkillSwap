@@ -1,19 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { X, Mic, MicOff, Video, VideoOff, PhoneOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface VideoCallProps {
-  userId: string;
   userName: string;
   userProfilePicture?: string;
   onClose: () => void;
   onCallEnd?: () => void;
 }
 
-export function VideoCall({ userId, userName, userProfilePicture, onClose, onCallEnd }: VideoCallProps) {
+export function VideoCall({ userName, userProfilePicture, onClose, onCallEnd }: VideoCallProps) {
   const [isCallActive, setIsCallActive] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
