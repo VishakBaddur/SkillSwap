@@ -10,6 +10,7 @@ import ResetPassword from '@/pages/ResetPassword';
 import Home from '@/pages/Home';
 import Profile from '@/pages/Profile';
 import ProfileSetup from '@/pages/ProfileSetup';
+import Demo from '@/pages/Demo';
 import NotFound from '@/pages/NotFound';
 import { Matches } from '@/components/ui/matches';
 import { AnimatedBackground } from '@/components/ui/animated-background';
@@ -115,6 +116,7 @@ function App() {
       <AnimatedBackground />
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/demo" element={<Demo />} />
         <Route path="/auth" element={(!session || isRecovery) ? <Auth /> : <Navigate to="/home" />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home" element={session ? <Home /> : <Navigate to="/auth" />} />

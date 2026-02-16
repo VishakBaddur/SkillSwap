@@ -116,7 +116,7 @@ export default function Index() {
               </Button>
             </Link>
             <Button variant="outline" size="lg" className="text-base px-8 py-6 !border-white/30 !text-white hover:!bg-white/10 bg-transparent">
-              Watch Demo
+              <Link to="/demo">Watch Demo</Link>
             </Button>
           </motion.div>
         </div>
