@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Chat } from '@/components/ui/chat';
 import { SkillExchangeRequest } from '@/components/ui/skill-exchange';
+import { VideoCall } from '@/components/ui/video-call';
 import { supabase } from '@/lib/supabase';
 import { getTopMatches, getMatchQuality, MatchScore } from '@/lib/matching';
 import { 
@@ -16,7 +17,8 @@ import {
   Users,
   MapPin,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Video
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
@@ -47,6 +49,7 @@ export function Matches() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showChat, setShowChat] = useState(false);
   const [showSkillExchange, setShowSkillExchange] = useState(false);
+  const [showVideoCall, setShowVideoCall] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -187,7 +190,13 @@ export function Matches() {
   const closeModals = () => {
     setShowChat(false);
     setShowSkillExchange(false);
+    setShowVideoCall(false);
     setSelectedUser(null);
+  };
+
+  const handleVideoCall = (user: User) => {
+    setSelectedUser(user);
+    setShowVideoCall(true);
   };
 
   if (loading) {
@@ -407,6 +416,16 @@ export function Matches() {
                             size="sm"
                             variant="outline"
                             className="border-white/20 text-white hover:bg-white/10"
+                            onClick={() => handleVideoCall(match.user)}
+                          >
+                            <Video className="w-4 h-4" />
+                          </Button>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-white/20 text-white hover:bg-white/10"
                             onClick={() => handleSkillExchange(match.user)}
                           >
                             <ExternalLink className="w-4 h-4" />
@@ -467,6 +486,19 @@ export function Matches() {
               />
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Video Call Modal */}
+      <AnimatePresence>
+        {showVideoCall && selectedUser && (
+          <VideoCall
+            userId={selectedUser.id}
+            userName={selectedUser.name}
+            userProfilePicture={selectedUser.profile_picture}
+            onClose={closeModals}
+            onCallEnd={closeModals}
+          />
         )}
       </AnimatePresence>
 

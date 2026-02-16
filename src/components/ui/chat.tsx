@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserSafety } from '@/components/ui/user-safety';
+import { VideoCall } from '@/components/ui/video-call';
 import { supabase } from '@/lib/supabase';
 import { executeQuery, executeMutation } from '@/lib/supabase-client';
 import { useErrorMonitor } from '@/lib/error-monitor';
@@ -38,6 +39,7 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [showSafety, setShowSafety] = useState(false);
+  const [showVideoCall, setShowVideoCall] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const subscriptionRef = useRef<any>(null);
   const { toast } = useToast();
@@ -79,15 +81,15 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
           'fetchMessages',
           async () => {
             const result = await supabase
-              .from('messages')
-              .select(`
-                *,
-                sender:users!messages_sender_id_fkey(name, profile_picture)
-              `)
-              .or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`)
-              .order('created_at', { ascending: true });
+        .from('messages')
+        .select(`
+          *,
+          sender:users!messages_sender_id_fkey(name, profile_picture)
+        `)
+        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`)
+        .order('created_at', { ascending: true });
             return result;
-          }
+      }
         )
       );
 
@@ -106,28 +108,28 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
 
   const setupRealtimeSubscription = async (): Promise<(() => void) | undefined> => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
 
       // Clean up existing subscription
       if (subscriptionRef.current) {
         subscriptionRef.current.unsubscribe();
       }
 
-      const subscription = supabase
+    const subscription = supabase
         .channel(`messages-${user.id}-${userId}`)
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'messages',
-            filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`,
-          },
-          (payload) => {
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`,
+        },
+        (payload) => {
             try {
-              const newMessage = payload.new as Message;
-              if (newMessage.sender_id === userId || newMessage.receiver_id === userId) {
+          const newMessage = payload.new as Message;
+          if (newMessage.sender_id === userId || newMessage.receiver_id === userId) {
                 setMessages(prev => {
                   // Avoid duplicates
                   if (prev.some(m => m.id === newMessage.id)) {
@@ -135,12 +137,12 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
                   }
                   return [...prev, newMessage];
                 });
-              }
+          }
             } catch (error) {
               reportError(error, { operation: 'realtimeMessageHandler', component: 'Chat' });
             }
           }
-        )
+      )
         .subscribe((status) => {
           if (status === 'SUBSCRIBED') {
             console.log('[Chat] Real-time subscription active');
@@ -154,11 +156,11 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
 
       subscriptionRef.current = subscription;
 
-      return () => {
+    return () => {
         if (subscription) {
-          subscription.unsubscribe();
+      subscription.unsubscribe();
         }
-      };
+    };
     } catch (error) {
       reportError(error, { operation: 'setupRealtimeSubscription', component: 'Chat' });
       return () => {};
@@ -180,11 +182,11 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
           'sendMessage',
           async () => {
             const result = await supabase
-              .from('messages')
-              .insert({
-                sender_id: user.id,
-                receiver_id: userId,
-                content: newMessage.trim(),
+        .from('messages')
+        .insert({
+          sender_id: user.id,
+          receiver_id: userId,
+          content: newMessage.trim(),
               })
               .select();
             return result;
@@ -238,10 +240,7 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="sm">
-            <Phone className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={() => setShowVideoCall(true)}>
             <Video className="w-4 h-4" />
           </Button>
           <Button variant="ghost" size="sm" onClick={handleSafetyAction}>
@@ -307,6 +306,19 @@ export function Chat({ userId, userName, userProfilePicture, onClose }: ChatProp
           </div>
         </form>
       </CardContent>
+
+      {/* Video Call Modal */}
+      <AnimatePresence>
+        {showVideoCall && (
+          <VideoCall
+            userId={userId}
+            userName={userName}
+            userProfilePicture={userProfilePicture}
+            onClose={() => setShowVideoCall(false)}
+            onCallEnd={() => setShowVideoCall(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* User Safety Modal */}
       <AnimatePresence>
