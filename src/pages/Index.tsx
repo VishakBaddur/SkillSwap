@@ -115,9 +115,11 @@ export default function Index() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="text-base px-8 py-6 !border-white/30 !text-white hover:!bg-white/10 bg-transparent">
-              <Link to="/demo">Watch Demo</Link>
-            </Button>
+            <Link to="/demo">
+              <Button variant="outline" size="lg" className="text-base px-8 py-6 !border-white/30 !text-white hover:!bg-white/10 bg-transparent">
+                Watch Demo
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </motion.section>
